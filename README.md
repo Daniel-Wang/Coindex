@@ -6,11 +6,11 @@ This is for the [bounty](https://www.eventbrite.com/e/signature-bounties-encrypt
 
 Team: Yash Mathur and Daniel Wang (Computer Science students at the University of Waterloo)
 
-#TODO List
+### TODO List
 
 Each of these is probably a huge PR
 
-- [] Port over changes from Coindex (HackHarvard)
+- [x] Port over changes from Coindex (HackHarvard)
 - [] Implement TODOs already mentioned
 - [] Logout redirect
 - [] Major UI improvements
