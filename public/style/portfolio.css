@@ -1,0 +1,126 @@
+.portfolio{
+  background: #FFF;
+  padding: 15px;
+  border-radius: 5px;
+  font-family: Helvetica;
+  color: #326771!important;
+  width: 47%;
+  min-height: 210px;
+}
+
+.portfolio-transaction-container {
+  margin-top: 15px;
+  width: 85%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dialog {
+  display: none;
+  width: 350px;
+  height: 150px;
+  background-color: white;
+  border: 1px solid #000;
+  padding: 10px;
+  position: fixed;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 11;
+
+  margin: auto;
+}
+
+.textinput {
+  padding: 10px;
+  min-width: 50px;
+  border-radius: 5px;
+  border: 1px solid #e4e4e4;
+}
+
+.Group-Header-portfolioItem{
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.portfolio-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 15px;
+}
+
+.portfolio-header h2 {
+  display: inline-block;
+}
+
+.portfolio-header button{
+  border: none;
+  background: #326771;
+  color: #FFF;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 5px 9px;
+  cursor: pointer;
+}
+
+.portfolio-item-container{
+  width: 100%;
+  max-height: 20%;
+  padding: 10px 0;
+}
+
+.portfolio-item{
+  display: flex;
+  font-size: 12pt;
+  padding-bottom: 10px;
+}
+
+.portfolioHeading {
+  font-weight: bolder!important;
+  color: #326771!important;
+}
+
+.portfolio-item div{
+  flex: 1;
+}
+
+.add{
+    width: 100%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    font-size: 14px;
+}
+
+.section-footer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 1%;
+    padding-bottom: 1%;
+
+    color: #A8B8CD;
+    font-size: 14px;
+
+    border-top: solid;
+    border-width: thin;
+    border-bottom-color: lightgray;
+}
+
+.bitcoin {
+
+}
+
+.ethereum{
+
+}
+
+.lite-coin{
+
+}

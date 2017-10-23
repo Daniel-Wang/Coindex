@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Coindex</title>
+  <link rel="stylesheet" href="style/app.css">
+  <link rel="stylesheet" href="style/dashboard.css">
+  <link rel="stylesheet" href="style/portfolio.css">
+  <link rel="stylesheet" href="style/transaction.css">
+  <link rel="stylesheet" href="style/chart.css">
+</head>
+
+<body>
+  <main role="main"></main>
+  <div class="header">
+    <h1>Coindex</h1>
+    <div class="logout">
+      <a href="#">
+        Logout
+      </a>
+    </div>
+  </div>
+
+  <div class="components">
+    <div>
+    <% include partials/chart %>
+    </div>
+
+    <% include partials/addDialog %>
+
+    <div style='display: flex; width: 85%;margin-top:15px;'>
+      <% include partials/portfolio %>
+      <% include partials/transaction %>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
