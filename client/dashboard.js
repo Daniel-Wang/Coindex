@@ -36,17 +36,31 @@ var DashboardPage = Backbone.View.extend({
     $('#add-wallet-button').click(function(event) {
       event.preventDefault();
       //save the address
-      var newAddress = document.getElementById('wallet-address').value;
+      var newAddress = document.getElementById('wallet-address').value.trim();
 
-      //TODO: CHECK UNIQUENESS OF ADDRESS BEFORE ADDING
-      var newWallet = {
-        "type": selectedType,
-        "address": newAddress
-      };
+      if (newAddress) {
+        var alreadyExists = false;
 
-      portfolio.wallets.push(newWallet);
+        //TODO: CHECK UNIQUENESS OF ADDRESS BEFORE ADDING
+        var newWallet = {
+          "type": selectedType,
+          "address": newAddress
+        };
 
-      fetchWalletInfo(selectedType, newAddress);
+        wallets.forEach(function (wallet) {
+          if (wallet.address === newAddress) {
+            alreadyExists = true;
+          }
+        });
+        if (!alreadyExists) {
+          portfolio.wallets.push(newWallet);
+          fetchWalletInfo(selectedType, newAddress);
+        } else {
+          // TODO: Show error, wallet is already linked
+        }
+      } else {
+        //TODO: Show Error, empty address field
+      }
     });
 
     $('#btc-type-button').click(function(event) {
