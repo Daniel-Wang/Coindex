@@ -41,7 +41,6 @@ var DashboardPage = Backbone.View.extend({
       if (newAddress) {
         var alreadyExists = false;
 
-        //TODO: CHECK UNIQUENESS OF ADDRESS BEFORE ADDING
         var newWallet = {
           "type": selectedType,
           "address": newAddress
