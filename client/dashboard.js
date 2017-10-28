@@ -38,6 +38,14 @@ var DashboardPage = Backbone.View.extend({
       //save the address
       var newAddress = document.getElementById('wallet-address').value.trim();
 
+      if (document.getElementById('fsd-button').checked) {
+        selectedType = document.getElementById('fsd-button').value;
+      } else if (document.getElementById('eth-button').checked) {
+        selectedType = document.getElementById('eth-button').value;
+      } else if (document.getElementById('ltc-button').checked) {
+        selectedType = document.getElementById('ltc-button').value;
+      }
+
       if (newAddress) {
         var alreadyExists = false;
 
@@ -60,21 +68,6 @@ var DashboardPage = Backbone.View.extend({
       } else {
         //TODO: Show Error, empty address field
       }
-    });
-
-    $('#btc-type-button').click(function(event) {
-      event.preventDefault();
-      selectedType = BTC;
-    });
-
-    $('#eth-type-button').click(function(event) {
-      event.preventDefault();
-      selectedType = ETH;
-    });
-
-    $('#ltc-type-button').click(function(event) {
-      event.preventDefault();
-      selectedType = LTC;
     });
 
     function fetchWalletInfo(type, address) {
