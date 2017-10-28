@@ -38,8 +38,8 @@ var DashboardPage = Backbone.View.extend({
       //save the address
       var newAddress = document.getElementById('wallet-address').value.trim();
 
-      if (document.getElementById('fsd-button').checked) {
-        selectedType = document.getElementById('fsd-button').value;
+      if (document.getElementById('btc-button').checked) {
+        selectedType = document.getElementById('btc-button').value;
       } else if (document.getElementById('eth-button').checked) {
         selectedType = document.getElementById('eth-button').value;
       } else if (document.getElementById('ltc-button').checked) {
