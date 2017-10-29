@@ -59,6 +59,7 @@ var DashboardPage = Backbone.View.extend({
             alreadyExists = true;
           }
         });
+
         if (!alreadyExists) {
           portfolio.wallets.push(newWallet);
           fetchWalletInfo(selectedType, newAddress);
@@ -258,9 +259,10 @@ var DashboardPage = Backbone.View.extend({
       fetchWalletInfo(portfolio.wallets[0].type, portfolio.wallets[0].address);
     });
 
-    portfolio = {
-      "wallets" : []
-    };
+    // // Uncomment when Daniel is testing and blockstack doesn't work
+    // portfolio = {
+    //   "wallets" : []
+    // };
 
     wallets = portfolio.wallets;
 
