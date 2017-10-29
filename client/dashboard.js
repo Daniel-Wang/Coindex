@@ -135,7 +135,7 @@ var DashboardPage = Backbone.View.extend({
           }
 
           var percent = Math.round(coinValueUSD*100/parseFloat(portfolio.totalUSD));
-          portfolio.totalUSD = parseFloat(portfolio.totalUSD).toFixed(2);
+          portfolio.totalUSD = parseFloat(portfolio.totalUSD).toFixed(5);
 
           populatePortfolio(type, percent, walletValue, coinValueUSD);
           blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
@@ -185,7 +185,7 @@ var DashboardPage = Backbone.View.extend({
 
     function populateRecentTransactions(date, transText, transVal, transType) {
       $('[class="transaction-common"]').hide();
-      $(".transaction").append(`<div class="portfolio-item"> <div class="CryptoCurrencyType"  style="flex:0.8">${date}</div> <div class="Percent-of-Portfolio" style="flex:1.2">${transText}</div> <div class="CryptoCurrencyVal" style="flex:1">${parseFloat(transVal).toFixed(2)} <span>${transType}</span></div> </div>`);
+      $(".transaction").append(`<div class="portfolio-item"> <div class="CryptoCurrencyType"  style="flex:0.8">${date}</div> <div class="Percent-of-Portfolio" style="flex:1.2">${transText}</div> <div class="CryptoCurrencyVal" style="flex:1">${parseFloat(transVal).toFixed(5)} <span>${transType}</span></div> </div>`);
     }
 
     function populatePortfolio(type, portPercent, value, usdExch) {
@@ -203,7 +203,7 @@ var DashboardPage = Backbone.View.extend({
           typeName = "Litecoin";
           break;
       }
-      $(".portfolio-item-container").append(`<div class="portfolio-item">  <div class="CryptoCurrencyType">${typeName}</div> <div class="Percent-of-Portfolio">${portPercent}%</div><div class="CryptoCurrencyVal">${value.toFixed(2)} ${type}</div><div class="USD">USD ${usdExch.toFixed(2)}</div></div>`);
+      $(".portfolio-item-container").append(`<div class="portfolio-item">  <div class="CryptoCurrencyType">${typeName}</div> <div class="Percent-of-Portfolio">${portPercent}%</div><div class="CryptoCurrencyVal">${value.toFixed(5)} ${type}</div><div class="USD">USD ${usdExch.toFixed(5)}</div></div>`);
 
       $('.portfolio-total-balance').html(`Total balance: US$${portfolio.totalUSD}`);
     }
