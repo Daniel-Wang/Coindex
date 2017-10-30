@@ -14,7 +14,6 @@ var DashboardPage = Backbone.View.extend({
   display: function(){
 
     $('.overlay').on('click', function(){
-      console.log('hello');
       $(this).hide();
       $('.dialog').toggle();
     });
@@ -28,7 +27,6 @@ var DashboardPage = Backbone.View.extend({
     var selectedType = BTC; // By default
 
     $('#addDialog-button').click(function(event) {
-      console.log('clicked');
       $('#addDialog').toggle();
       $('.overlay').toggle();
     });
@@ -103,7 +101,6 @@ var DashboardPage = Backbone.View.extend({
               var p = JSON.parse(data);
               walletValue = parseFloat(p.result)*Math.pow(10, -18);
               getPriceUSD(type, typeName, walletValue);
-              fetchTransactions(ETH, address);
             });
           });
           break;
@@ -124,7 +121,6 @@ var DashboardPage = Backbone.View.extend({
         res.on('data', (chunk) => {
           data += chunk;
           var p = JSON.parse(data);
-          // console.log(p[0]);
           var priceUSD = p[0].price_usd;
           var coinValueUSD = walletValue*parseFloat(priceUSD);
 
@@ -249,12 +245,13 @@ var DashboardPage = Backbone.View.extend({
 
     blockstack.getFile(STORAGE_FILE).then((portfolioJson) => {
       portfolio = JSON.parse(portfolioJson);
-      if (portfolio == null) {
+
+      if (portfolio.wallets.length == 0) {
         portfolio = {
           "wallets" : []
         };
       }
-      console.log(portfolio);
+
       fetchTransactions(portfolio.wallets[0].type, portfolio.wallets[0].address);
       fetchWalletInfo(portfolio.wallets[0].type, portfolio.wallets[0].address);
     });
@@ -265,19 +262,6 @@ var DashboardPage = Backbone.View.extend({
     // };
 
     wallets = portfolio.wallets;
-
-    if (!wallets || wallets.length == 0) {
-      $(".transaction-message").html('<div class="transaction-common">No Recent Transactions</span>');
-
-    } else {
-      //
-      var itemsP = 0;
-      wallets.forEach(function(wallet) {
-        // console.log(`address: ${wallet.address}`);
-        fetchTransactions(wallet.type, wallet.address);
-        $(".portfolio-item-container").append(`<div class="portfolio-item">  <div class="CryptoCurrencyType" style="flex:0.8">${wallet.wallet_name}</div> <div class="Percent-of-Portfolio">59%</div><div class="CryptoCurrencyVal">0.09 BTC</div><div class="USD">USD$760</div></div>`);
-      });
-    }
   }
 });
 
