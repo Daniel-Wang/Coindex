@@ -11,6 +11,7 @@ Team: Yash Mathur and Daniel Wang (Computer Science students at the University o
 Each of these is probably a huge PR
 
 - [x] Port over changes from Coindex (HackHarvard)
+- [x] Fix duplicate address bug
 - [] Implement TODOs already mentioned
 - [] Logout redirect
 - [] Major UI improvements
