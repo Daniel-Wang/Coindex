@@ -14,7 +14,6 @@ var DashboardPage = Backbone.View.extend({
   display: function(){
 
     $('.overlay').on('click', function(){
-      console.log('hello');
       $(this).hide();
       $('.dialog').toggle();
     });
@@ -28,7 +27,6 @@ var DashboardPage = Backbone.View.extend({
     var selectedType = BTC; // By default
 
     $('#addDialog-button').click(function(event) {
-      console.log('clicked');
       $('#addDialog').toggle();
       $('.overlay').toggle();
     });
@@ -36,32 +34,39 @@ var DashboardPage = Backbone.View.extend({
     $('#add-wallet-button').click(function(event) {
       event.preventDefault();
       //save the address
-      var newAddress = document.getElementById('wallet-address').value;
+      var newAddress = document.getElementById('wallet-address').value.trim();
 
-      //TODO: CHECK UNIQUENESS OF ADDRESS BEFORE ADDING
-      var newWallet = {
-        "type": selectedType,
-        "address": newAddress
-      };
+      if (document.getElementById('btc-button').checked) {
+        selectedType = document.getElementById('btc-button').value;
+      } else if (document.getElementById('eth-button').checked) {
+        selectedType = document.getElementById('eth-button').value;
+      } else if (document.getElementById('ltc-button').checked) {
+        selectedType = document.getElementById('ltc-button').value;
+      }
 
-      portfolio.wallets.push(newWallet);
+      if (newAddress) {
+        var alreadyExists = false;
 
-      fetchWalletInfo(selectedType, newAddress);
-    });
+        var newWallet = {
+          "type": selectedType,
+          "address": newAddress
+        };
 
-    $('#btc-type-button').click(function(event) {
-      event.preventDefault();
-      selectedType = BTC;
-    });
+        wallets.forEach(function (wallet) {
+          if (wallet.address === newAddress) {
+            alreadyExists = true;
+          }
+        });
 
-    $('#eth-type-button').click(function(event) {
-      event.preventDefault();
-      selectedType = ETH;
-    });
-
-    $('#ltc-type-button').click(function(event) {
-      event.preventDefault();
-      selectedType = LTC;
+        if (!alreadyExists) {
+          portfolio.wallets.push(newWallet);
+          fetchWalletInfo(selectedType, newAddress);
+        } else {
+          // TODO: Show error, wallet is already linked
+        }
+      } else {
+        //TODO: Show Error, empty address field
+      }
     });
 
     function fetchWalletInfo(type, address) {
@@ -96,7 +101,6 @@ var DashboardPage = Backbone.View.extend({
               var p = JSON.parse(data);
               walletValue = parseFloat(p.result)*Math.pow(10, -18);
               getPriceUSD(type, typeName, walletValue);
-              fetchTransactions(ETH, address);
             });
           });
           break;
@@ -117,7 +121,6 @@ var DashboardPage = Backbone.View.extend({
         res.on('data', (chunk) => {
           data += chunk;
           var p = JSON.parse(data);
-          // console.log(p[0]);
           var priceUSD = p[0].price_usd;
           var coinValueUSD = walletValue*parseFloat(priceUSD);
 
@@ -128,7 +131,7 @@ var DashboardPage = Backbone.View.extend({
           }
 
           var percent = Math.round(coinValueUSD*100/parseFloat(portfolio.totalUSD));
-          portfolio.totalUSD = parseFloat(portfolio.totalUSD).toFixed(2);
+          portfolio.totalUSD = parseFloat(portfolio.totalUSD).toFixed(5);
 
           populatePortfolio(type, percent, walletValue, coinValueUSD);
           blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
@@ -178,7 +181,7 @@ var DashboardPage = Backbone.View.extend({
 
     function populateRecentTransactions(date, transText, transVal, transType) {
       $('[class="transaction-common"]').hide();
-      $(".transaction").append(`<div class="portfolio-item"> <div class="CryptoCurrencyType"  style="flex:0.8">${date}</div> <div class="Percent-of-Portfolio" style="flex:1.2">${transText}</div> <div class="CryptoCurrencyVal" style="flex:1">${parseFloat(transVal).toFixed(2)} <span>${transType}</span></div> </div>`);
+      $(".transaction").append(`<div class="portfolio-item"> <div class="CryptoCurrencyType"  style="flex:0.8">${date}</div> <div class="Percent-of-Portfolio" style="flex:1.2">${transText}</div> <div class="CryptoCurrencyVal" style="flex:1">${parseFloat(transVal).toFixed(5)} <span>${transType}</span></div> </div>`);
     }
 
     function populatePortfolio(type, portPercent, value, usdExch) {
@@ -196,7 +199,7 @@ var DashboardPage = Backbone.View.extend({
           typeName = "Litecoin";
           break;
       }
-      $(".portfolio-item-container").append(`<div class="portfolio-item">  <div class="CryptoCurrencyType">${typeName}</div> <div class="Percent-of-Portfolio">${portPercent}%</div><div class="CryptoCurrencyVal">${value.toFixed(2)} ${type}</div><div class="USD">USD ${usdExch.toFixed(2)}</div></div>`);
+      $(".portfolio-item-container").append(`<div class="portfolio-item">  <div class="CryptoCurrencyType">${typeName}</div> <div class="Percent-of-Portfolio">${portPercent}%</div><div class="CryptoCurrencyVal">${value.toFixed(5)} ${type}</div><div class="USD">USD ${usdExch.toFixed(5)}</div></div>`);
 
       $('.portfolio-total-balance').html(`Total balance: US$${portfolio.totalUSD}`);
     }
@@ -242,34 +245,23 @@ var DashboardPage = Backbone.View.extend({
 
     blockstack.getFile(STORAGE_FILE).then((portfolioJson) => {
       portfolio = JSON.parse(portfolioJson);
-      if (portfolio == null) {
+
+      if (portfolio.wallets.length == 0) {
         portfolio = {
           "wallets" : []
         };
       }
-      console.log(portfolio);
+
       fetchTransactions(portfolio.wallets[0].type, portfolio.wallets[0].address);
       fetchWalletInfo(portfolio.wallets[0].type, portfolio.wallets[0].address);
     });
 
-    portfolio = {
-      "wallets" : []
-    };
+    // // Uncomment when Daniel is testing and blockstack doesn't work
+    // portfolio = {
+    //   "wallets" : []
+    // };
 
     wallets = portfolio.wallets;
-
-    if (!wallets || wallets.length == 0) {
-      $(".transaction-message").html('<div class="transaction-common">No Recent Transactions</span>');
-
-    } else {
-      //
-      var itemsP = 0;
-      wallets.forEach(function(wallet) {
-        // console.log(`address: ${wallet.address}`);
-        fetchTransactions(wallet.type, wallet.address);
-        $(".portfolio-item-container").append(`<div class="portfolio-item">  <div class="CryptoCurrencyType" style="flex:0.8">${wallet.wallet_name}</div> <div class="Percent-of-Portfolio">59%</div><div class="CryptoCurrencyVal">0.09 BTC</div><div class="USD">USD$760</div></div>`);
-      });
-    }
   }
 });
 
