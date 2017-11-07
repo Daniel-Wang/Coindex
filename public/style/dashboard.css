@@ -1,28 +1,34 @@
-.header {
-  background-color: #326771;
-  color: white;
-  font-size: 12px;
+.sidebar {
+  background-color: #547AA5;
+  z-index: 1;
+  top: 0;
+  left: 0;  
+  float: none;
+  position: fixed!important;
+  height: 100%;
+  overflow-x: hidden;
+  padding: 25px;
 
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
 }
 
-.header h1{
-  padding: 10px 0px 10px 10px;
+.sidebar-content {
+  float: none;
+  display: block;
+  padding: 10px;
 }
 
-.header .logout{
-  padding-right: 10px;
+.sidebar-header {
+  font-size: 50px;
 }
 
-.header .logout{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.sidebar-logout{
+  margin-bottom: 75px;
 }
 
-.sub-header{
+.sub-header {
   background-color: white;
   color: #2164CB;
   font-size: 12px;
@@ -32,7 +38,7 @@
   padding: 10px 0px 10px 10px;
 }
 
-.components{
+.components {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -41,7 +47,7 @@
   margin-bottom: 30px;
 }
 
-.graph{
+.graph {
   width: 80%;
   height:50%;
 
@@ -52,7 +58,7 @@
   background-color: white;
 }
 
-.portfolio-transaction{
+.portfolio-transaction {
   display: flex;
   flex-direction: row;
   justify-content: space-between;

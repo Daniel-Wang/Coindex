@@ -12,25 +12,37 @@
 
 <body>
   <main role="main"></main>
-  <div class="header">
-    <h1>Coindex</h1>
-    <div class="logout">
-      <a href="#">
-        Logout
-      </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar" style="width:20%">
+    <div>
+      <a href="#" class="sidebar-content sidebar-header">Coindex</a>
+
+      <a href="#" class="sidebar-content">Link 1</a>
+      <a href="#" class="sidebar-content">Link 2</a>
+      <a href="#" class="sidebar-content">Link 3</a>
     </div>
+
+    <div>
+      <a href="#" class="sidebar-content sidebar-logout">Logout</a>
+    </div>
+
   </div>
 
-  <div class="components">
-    <div>
-    <% include partials/chart %>
-    </div>
+  <!-- Dashboard -->
 
-    <% include partials/addDialog %>
+  <div style="margin-left:25%">
+    <div class="components">
+      <div>
+      <% include partials/chart %>
+      </div>
 
-    <div style='display: flex; width: 85%;margin-top:15px;'>
-      <% include partials/portfolio %>
-      <% include partials/transaction %>
+      <% include partials/addDialog %>
+
+      <div style='display: flex; width: 85%;margin-top:15px;'>
+        <% include partials/portfolio %>
+        <% include partials/transaction %>
+      </div>
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"
