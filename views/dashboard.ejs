@@ -14,19 +14,8 @@
   <main role="main"></main>
 
   <!-- Sidebar -->
-  <div class="sidebar" style="width:12%">
-    <div>
-      <a href="#" class="sidebar-content sidebar-header">Coindex</a>
-
-      <a href="#" class="sidebar-content">Link 1</a>
-      <a href="#" class="sidebar-content">Link 2</a>
-      <a href="#" class="sidebar-content">Link 3</a>
-    </div>
-
-    <div>
-      <a href="#" class="sidebar-content sidebar-logout">Logout</a>
-    </div>
-
+  <div>
+    <% include partials/sidebar %>
   </div>
 
   <!-- Dashboard -->
@@ -34,7 +23,7 @@
   <div style="margin-left:25%">
     <div class="components">
       <div>
-      <% include partials/chart %>
+        <% include partials/chart %>
       </div>
 
       <% include partials/addDialog %>

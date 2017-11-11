@@ -94,3 +94,33 @@ a{
 .description{
   max-width: 200px; 
 }
+
+.sidebar {
+  background-color: #547AA5;
+  z-index: 1;
+  top: 0;
+  left: 0;  
+  float: none;
+  position: fixed!important;
+  height: 100%;
+  overflow-x: hidden;
+  padding: 25px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar-content {
+  float: none;
+  display: block;
+  padding: 10px;
+}
+
+.sidebar-header {
+  font-size: 50px;
+}
+
+.sidebar-logout{
+  margin-bottom: 75px;
+}
