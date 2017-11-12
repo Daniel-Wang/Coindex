@@ -45,9 +45,9 @@ var DashboardPage = Backbone.View.extend({
     });
 
     $('#wallet-address').on('keyup', function(event) {
-
       newAddress = document.getElementById('wallet-address').value.trim();
-      // console.log()
+      document.getElementById('already-exists-error').display = 'none';
+      
       if (newAddress.length > 0) {
         document.getElementById('add-wallet-button').disabled = false;
       } else {
@@ -58,30 +58,27 @@ var DashboardPage = Backbone.View.extend({
     $('#add-wallet-button').click(function(event) {
       event.preventDefault();
 
-      if (newAddress) {
-        var alreadyExists = false;
+      var alreadyExists = false;
 
-        var newWallet = {
-          "type": selectedType,
-          "address": newAddress
-        };
+      var newWallet = {
+        "type": selectedType,
+        "address": newAddress
+      };
 
-        wallets.forEach(function (wallet) {
-          if (wallet.address === newAddress) {
-            alreadyExists = true;
-          }
-        });
-
-        if (!alreadyExists) {
-          portfolio.wallets.push(newWallet);
-          fetchWalletInfo(selectedType, newAddress);
-          document.getElementById('addDialog').display = 'none';
-        } else {
-          // TODO: Show error, wallet is already linked
+      wallets.forEach(function (wallet) {
+        if (wallet.address === newAddress) {
+          alreadyExists = true;
         }
+      });
+
+      if (!alreadyExists) {
+        portfolio.wallets.push(newWallet);
+        fetchWalletInfo(selectedType, newAddress);
+        document.getElementById('addDialog').display = 'none';
       } else {
-        //TODO: Show Error, empty address field
+        document.getElementById('already-exists-error').display = 'inline';
       }
+      
     });
 
     function fetchWalletInfo(type, address) {
