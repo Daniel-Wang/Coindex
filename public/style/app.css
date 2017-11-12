@@ -121,6 +121,11 @@ a{
   font-size: 50px;
 }
 
-.sidebar-logout{
+.sidebar-logout {
   margin-bottom: 75px;
+}
+
+.main-body {
+  margin-left:15%;
+  padding: 35px;
 }
