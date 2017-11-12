@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Coindex - <%= coinSet[coinId] %></title>
+  <link rel="stylesheet" href="../style/app.css">
+  <link rel="stylesheet" href="../style/coin.css">
+
+</head>
+
+<body>
+  <main role="main"></main>
+
+  <!-- Sidebar -->
+  <div>
+    <% include partials/sidebar %>
+  </div>
+
+  <!-- Main Coin Page -->
+
+  <div class="main-body">
+    <!-- Coin Title -->
+    <h1 class="title"><%= coinSet[coinId] %></h1>
+    <h3 class="title-symbol">(<%= coinId.toUpperCase() %>)</h3>
+  
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <script src="/coin.js"></script>
+  <script>
+    var coinName = "<%= coinSet[coinId] %>";
+    var coinId = "<%= coinId %>";
+  </script>
+</body>
+</html>
