@@ -75,6 +75,10 @@ a{
   justify-content: flex-start;
 }
 
+.column {
+  display: flex; 
+  flex-direction: column; 
+}
 
 .content{
   display: flex; 

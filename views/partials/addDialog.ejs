@@ -1,16 +1,23 @@
 <div id="addDialog" class="dialog">
-  <h2>Add New Wallet</h2>
 
-  <div class="addDialog">
-    <div class='radiogroup'>
-      <div><input type='radio' name='crypto' value='btc' id='btc-button' checked/> <label for="btc">Bitcoin</label></div>
-      <div><input type='radio' name='crypto' value='eth' id='eth-button'/> <label for='eth'>Ethereum</label></div>
-      <div><input type='radio' name='crypto' value='ltc' id='ltc-button'/> <label for='ltc'>Litecoin</label></div>
+  <div class="currency-button-row">
+    <div class="currency-button currency-button-selected" id='btc-button'>
+      <img src="img/BTC.svg" alt="Bitcoin" class="currency-img">
+      <p>Bitcoin</p>
     </div>
-    <div>
-      <input type="text" class="textinput" id="wallet-address" placeholder="Account address"> <button class='button' id="add-wallet-button">Add</button>
+    <div class="currency-button" id='eth-button'>
+      <img src="img/ETH.svg" alt="Ethereum" class="currency-img">
+      <p>Ethereum</p>
     </div>
   </div>
+  
+  <div class="column">
+    <h4 class="dialog-header">Address</h4>
+
+    <input type="text" class="textinput" id="wallet-address" placeholder="Account address 0x66265740183020..."> 
+    <button class='button' id="add-wallet-button" disabled="true">Link Wallet</button>
+  </div>
+
 </div>
 <div class='overlay'>
 

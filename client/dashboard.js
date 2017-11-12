@@ -25,24 +25,38 @@ var DashboardPage = Backbone.View.extend({
     var wallets;
     var transactions = [];
     var selectedType = BTC; // By default
+    var newAddress = "";
 
     $('#addDialog-button').click(function(event) {
       $('#addDialog').toggle();
       $('.overlay').toggle();
     });
 
+    $('#btc-button').click(function(event) {
+      document.getElementById('btc-button').classList.add('currency-button-selected');
+      document.getElementById('eth-button').classList.remove('currency-button-selected');
+      selectedType = BTC; 
+    });
+
+    $('#eth-button').click(function(event) {
+      document.getElementById('eth-button').classList.add('currency-button-selected');
+      document.getElementById('btc-button').classList.remove('currency-button-selected');
+      selectedType = ETH;
+    });
+
+    $('#wallet-address').on('keyup', function(event) {
+
+      newAddress = document.getElementById('wallet-address').value.trim();
+      // console.log()
+      if (newAddress.length > 0) {
+        document.getElementById('add-wallet-button').disabled = false;
+      } else {
+        document.getElementById('add-wallet-button').disabled = true;
+      }
+    });
+
     $('#add-wallet-button').click(function(event) {
       event.preventDefault();
-      //save the address
-      var newAddress = document.getElementById('wallet-address').value.trim();
-
-      if (document.getElementById('btc-button').checked) {
-        selectedType = document.getElementById('btc-button').value;
-      } else if (document.getElementById('eth-button').checked) {
-        selectedType = document.getElementById('eth-button').value;
-      } else if (document.getElementById('ltc-button').checked) {
-        selectedType = document.getElementById('ltc-button').value;
-      }
 
       if (newAddress) {
         var alreadyExists = false;
@@ -61,6 +75,7 @@ var DashboardPage = Backbone.View.extend({
         if (!alreadyExists) {
           portfolio.wallets.push(newWallet);
           fetchWalletInfo(selectedType, newAddress);
+          document.getElementById('addDialog').display = 'none';
         } else {
           // TODO: Show error, wallet is already linked
         }
