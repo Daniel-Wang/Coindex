@@ -20,7 +20,7 @@
 .dialog {
   display: none;
   width: 450px;
-  height: 320px;
+  height: 400px;
   background-color: white;
   border-radius: 5px;
   padding: 20px;
@@ -37,8 +37,8 @@
 .dialog-header {
   font-size: 18px;
   color: #547AA5;
-  margin-top: 6px;
-  margin-bottom: 6px;
+  margin-top: 18px;
+  margin-bottom: 10px;
 }
 
 .textinput {

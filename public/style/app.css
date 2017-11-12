@@ -139,3 +139,36 @@ a{
   flex-direction: row;
   justify-content: center;
 }
+
+.select-list {
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+
+  position: relative; 
+  
+  background-color: white;
+  padding: 16px;
+  margin-bottom: 8px;
+}
+
+.line-separator {
+  height: 1px;
+  border-bottom: 1px solid #a6b1ba;
+  margin-top: 8px;
+  margin-bottom: 18px;
+}
+
+.quantity-input {
+  padding-right: 20px;
+}
+
+.metric {
+  height:0px;
+  overflow:visible;
+  pointer-events:none;
+  background:none !important;
+  margin-left:-50px;
+  margin-top: 26px;
+  color: #a6b1ba;
+}

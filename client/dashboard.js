@@ -47,7 +47,7 @@ var DashboardPage = Backbone.View.extend({
     $('#manual-dialog-button').click(function(event) {
       $('#choose-add-type-dialog').toggle();
       $('#manual-add-dialog').toggle();
-
+      document.getElementById('addDialog').style.height = "600px";
     });
 
     $('#btc-button').click(function(event) {
