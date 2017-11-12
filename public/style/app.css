@@ -133,3 +133,9 @@ a{
   margin-left:15%;
   padding: 35px;
 }
+
+.centered-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}

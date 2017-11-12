@@ -116,12 +116,6 @@
     border-bottom-color: lightgray;
 }
 
-.currency-button-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
 .currency-button {
   width: 124px;
   height: 105px;
@@ -157,4 +151,22 @@
   font-size: 12px;
   margin-bottom: 10px;
   display: none;
+}
+
+#address-add-dialog {
+  display: none;
+}
+
+#manual-add-dialog {
+  display: none;
+}
+
+#address-dialog-button {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+#manual-dialog-button {
+  margin-top: 12px;
+  margin-bottom: 12px;
 }

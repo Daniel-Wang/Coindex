@@ -1,22 +1,38 @@
 <div id="addDialog" class="dialog">
 
-  <div class="currency-button-row">
-    <div class="currency-button currency-button-selected" id='btc-button'>
-      <img src="img/BTC.svg" alt="Bitcoin" class="currency-img">
-      <p>Bitcoin</p>
+  <h4 class="dialog-header">Add Tokens</h4>
+
+  <div id="choose-add-type-dialog" class="column">
+    <button class="button" id="address-dialog-button">Link Wallet with Portfolio</button>
+    
+    <h4 class="dialog-header centered-row">Or</h4>
+
+    <button class="button" id="manual-dialog-button">Add Coins Manually</button>
+  </div>
+
+  <div id="address-add-dialog">
+    <div class="centered-row">
+      <div class="currency-button currency-button-selected" id='btc-button'>
+        <img src="img/BTC.svg" alt="Bitcoin" class="currency-img">
+        <p>Bitcoin</p>
+      </div>
+      <div class="currency-button" id='eth-button'>
+        <img src="img/ETH.svg" alt="Ethereum" class="currency-img">
+        <p>Ethereum</p>
+      </div>
     </div>
-    <div class="currency-button" id='eth-button'>
-      <img src="img/ETH.svg" alt="Ethereum" class="currency-img">
-      <p>Ethereum</p>
+    
+    <div class="column">
+      <h4 class="dialog-header">Address</h4>
+
+      <input type="text" class="textinput" id="wallet-address" placeholder="Account address 0x66265740183020...">
+      <p id="already-exists-error">Address already added to portfolio</p>
+      <button class='button' id="add-wallet-button" disabled="true">Link Wallet</button>
     </div>
   </div>
-  
-  <div class="column">
-    <h4 class="dialog-header">Address</h4>
 
-    <input type="text" class="textinput" id="wallet-address" placeholder="Account address 0x66265740183020...">
-    <p id="already-exists-error">Address already added to portfolio</p>
-    <button class='button' id="add-wallet-button" disabled="true">Link Wallet</button>
+  <div id="manual-add-dialog" class="column">
+    
   </div>
 
 </div>

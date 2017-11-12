@@ -13,9 +13,16 @@ const ethScanApiKey = "1W56HIJ9HQDWG3WRRTBANU3K7X3TB96P8Y";
 var DashboardPage = Backbone.View.extend({
   display: function(){
 
-    $('.overlay').on('click', function(){
-      $(this).hide();
+    function closeDialog() {
+      $('.overlay').hide();
       $('.dialog').toggle();
+      $('#choose-add-type-dialog').show();
+      $('#address-add-dialog').hide();
+      $('#manual-add-dialog').hide();
+    }
+
+    $('.overlay').on('click', function(){
+      closeDialog();
     });
 
     var portfolio = {
@@ -30,6 +37,17 @@ var DashboardPage = Backbone.View.extend({
     $('#addDialog-button').click(function(event) {
       $('#addDialog').toggle();
       $('.overlay').toggle();
+    });
+
+    $('#address-dialog-button').click(function(event) {
+      $('#choose-add-type-dialog').toggle();
+      $('#address-add-dialog').toggle();
+    });
+
+    $('#manual-dialog-button').click(function(event) {
+      $('#choose-add-type-dialog').toggle();
+      $('#manual-add-dialog').toggle();
+
     });
 
     $('#btc-button').click(function(event) {
@@ -65,6 +83,8 @@ var DashboardPage = Backbone.View.extend({
         "address": newAddress
       };
 
+      document.getElementById('wallet-address').value = "";
+
       wallets.forEach(function (wallet) {
         if (wallet.address === newAddress) {
           alreadyExists = true;
@@ -74,7 +94,7 @@ var DashboardPage = Backbone.View.extend({
       if (!alreadyExists) {
         portfolio.wallets.push(newWallet);
         fetchWalletInfo(selectedType, newAddress);
-        document.getElementById('addDialog').display = 'none';
+        closeDialog();
       } else {
         document.getElementById('already-exists-error').display = 'inline';
       }
