@@ -13,60 +13,155 @@ const ethScanApiKey = "1W56HIJ9HQDWG3WRRTBANU3K7X3TB96P8Y";
 var DashboardPage = Backbone.View.extend({
   display: function(){
 
-    $('.overlay').on('click', function(){
-      $(this).hide();
+    function closeDialog() {
+      $('.overlay').hide();
       $('.dialog').toggle();
+      $('#choose-add-type-dialog').show();
+      $('#address-add-dialog').hide();
+      $('#manual-add-dialog').hide();
+    }
+
+    $('.overlay').on('click', function(){
+      closeDialog();
     });
 
     var portfolio = {
       "wallets": [],
+      "coins": [],
       "totalUSD": 0
     };
     var wallets;
     var transactions = [];
-    var selectedType = BTC; // By default
+    var selectedAddressType = BTC; // By default
+    selectedManualType = BTC;
+    var newAddress = "";
+    var manualAmount = "";
+    var manualBuyPrice = "";
+
+    function checkEnableAddManualButton() {
+      if (manualAmount.length > 0 && manualBuyPrice.length > 0) {
+        document.getElementById('add-manual-button').disabled = false;
+      } else {
+        document.getElementById('add-manual-button').disabled = true;
+      }
+    }
+
+    function addCoinToPortfolio() {
+      var alreadyExists = false;
+      var newCoin = {
+        "type": selectedManualType,
+        "amount": parseFloat(manualAmount)
+      };
+
+      portfolio.coins.forEach(function (coin) {
+        if (coin.type === newCoin.type) {
+          alreadyExists = true;
+          coin.amount += newCoin.amount;
+        }
+      });
+
+      if (!alreadyExists) {
+        portfolio.coins.push(newCoin);
+      }
+    }
+
+    $('#add-manual-button').click(function(event) {
+      addCoinToPortfolio();
+      blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
+      closeDialog();
+    });
+
+    $('#coin-qty').on('keyup', function(event) {
+      manualAmount = document.getElementById('coin-qty').value.trim();
+      document.getElementById('amount-invalid-message').display = 'none';
+      if (isNaN(manualAmount)) {
+        document.getElementById('coin-qty').value = "";
+        document.getElementById('amount-invalid-message').display = 'inline';
+      }
+      checkEnableAddManualButton();
+    });
+
+    $('#currency-qty').on('keyup', function(event) {
+      manualBuyPrice = document.getElementById('currency-qty').value.trim();
+      document.getElementById('currency-invalid-message').display = 'none';
+      if (isNaN(manualBuyPrice)) {
+        document.getElementById('currency-qty').value = "";
+        document.getElementById('currency-invalid-message').display = 'inline';
+      }
+      checkEnableAddManualButton();
+    });
+
+    $('#coin-list').click(function(event) {
+      console.log("options");
+      console.log(selectedManualType.toUpperCase());
+      document.getElementById('coin-symbol').textContent = selectedManualType.toUpperCase();
+    });
 
     $('#addDialog-button').click(function(event) {
       $('#addDialog').toggle();
       $('.overlay').toggle();
     });
 
+    $('#address-dialog-button').click(function(event) {
+      $('#choose-add-type-dialog').toggle();
+      $('#address-add-dialog').toggle();
+    });
+
+    $('#manual-dialog-button').click(function(event) {
+      $('#choose-add-type-dialog').toggle();
+      $('#manual-add-dialog').toggle();
+      document.getElementById('addDialog').style.height = "600px";
+    });
+
+    $('#btc-button').click(function(event) {
+      document.getElementById('btc-button').classList.add('currency-button-selected');
+      document.getElementById('eth-button').classList.remove('currency-button-selected');
+      selectedAddressType = BTC; 
+    });
+
+    $('#eth-button').click(function(event) {
+      document.getElementById('eth-button').classList.add('currency-button-selected');
+      document.getElementById('btc-button').classList.remove('currency-button-selected');
+      selectedAddressType = ETH;
+    });
+
+    $('#wallet-address').on('keyup', function(event) {
+      newAddress = document.getElementById('wallet-address').value.trim();
+      document.getElementById('already-exists-error').display = 'none';
+      
+      if (newAddress.length > 0) {
+        document.getElementById('add-wallet-button').disabled = false;
+      } else {
+        document.getElementById('add-wallet-button').disabled = true;
+      }
+    });
+
     $('#add-wallet-button').click(function(event) {
       event.preventDefault();
-      //save the address
-      var newAddress = document.getElementById('wallet-address').value.trim();
 
-      if (document.getElementById('btc-button').checked) {
-        selectedType = document.getElementById('btc-button').value;
-      } else if (document.getElementById('eth-button').checked) {
-        selectedType = document.getElementById('eth-button').value;
-      } else if (document.getElementById('ltc-button').checked) {
-        selectedType = document.getElementById('ltc-button').value;
-      }
+      var alreadyExists = false;
 
-      if (newAddress) {
-        var alreadyExists = false;
+      var newWallet = {
+        "type": selectedAddressType,
+        "address": newAddress
+      };
 
-        var newWallet = {
-          "type": selectedType,
-          "address": newAddress
-        };
+      document.getElementById('wallet-address').value = "";
 
-        wallets.forEach(function (wallet) {
-          if (wallet.address === newAddress) {
-            alreadyExists = true;
-          }
-        });
-
-        if (!alreadyExists) {
-          portfolio.wallets.push(newWallet);
-          fetchWalletInfo(selectedType, newAddress);
-        } else {
-          // TODO: Show error, wallet is already linked
+      wallets.forEach(function (wallet) {
+        if (wallet.address === newAddress) {
+          alreadyExists = true;
         }
+      });
+
+      if (!alreadyExists) {
+        portfolio.wallets.push(newWallet);
+        fetchWalletInfo(selectedAddressType, newAddress);
+        closeDialog();
       } else {
-        //TODO: Show Error, empty address field
+        document.getElementById('already-exists-error').display = 'inline';
       }
+      
     });
 
     function fetchWalletInfo(type, address) {

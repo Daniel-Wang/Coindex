@@ -26,6 +26,14 @@
         <% include partials/chart %>
       </div>
 
+      <!-- There must be a better way to do this @Yash? -->
+      <script type="text/javascript">
+        var selectedManualType = "btc";
+        function selectManualCoinType(selector) {
+          selectedManualType = selector.options[selector.selectedIndex].value;
+          console.log(selectedManualType);
+        }
+      </script>
       <% include partials/addDialog %>
 
       <div style='display: flex; width: 85%;margin-top:15px;'>
