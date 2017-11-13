@@ -19,6 +19,7 @@
   "homepage": "https://github.com/yashmathur/coindex#readme",
   "dependencies": {
     "async": "^2.5.0",
+    "autobahn": "^17.5.2",
     "backbone": "^1.3.3",
     "blockstack": "^0.11.0",
     "bluebird": "^3.5.1",

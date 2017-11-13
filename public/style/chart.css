@@ -42,8 +42,39 @@ span.g-perc {
   color: red!important;
 }
 
-
 .name-c {
   display: flex;
   align-items: flex-start;
+}
+
+.line {
+  stroke-width: 2;
+  stroke: #7D95B6;
+}
+
+.circle {
+  stroke: #7D95B6;
+  fill: none;
+  stroke-width: 2;
+}
+
+.linechart_path {
+  stroke: #FFB119;
+  stroke-width: 3;
+  fill: none;
+}
+
+.linechart_area {
+  fill: #FFECC6;
+}
+
+.linechart {
+  padding: 35px 30px;
+  padding-top: 10px;
+}
+
+.curprice {
+  width: 100px;
+  display: inline-block;
+  text-align: center;
 }

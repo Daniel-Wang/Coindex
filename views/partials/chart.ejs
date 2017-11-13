@@ -1,11 +1,18 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"
 integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript" src="graphs.js"></script>
+<!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
+<!-- <script type="text/javascript" src="graphs.js"></script> -->
 
 <div class="gainers-container">
 
 </div>
 
-<div id='chart_div' style='width: 700px; height: 400px;'></div>
+<div id='chart_div'>
+  <span class='curprice'></span>
+  <svg class="linechart" id="graph" height="500" width="1000">
+  </svg>
+</div>
+
+<!-- <script type="text/javascript" src="charts.js"></script> -->
+<script type="text/javascript" src="charts-backbone.js"></script>
