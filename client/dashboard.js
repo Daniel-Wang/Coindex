@@ -27,12 +27,75 @@ var DashboardPage = Backbone.View.extend({
 
     var portfolio = {
       "wallets": [],
+      "coins": [],
       "totalUSD": 0
     };
     var wallets;
     var transactions = [];
-    var selectedType = BTC; // By default
+    var selectedAddressType = BTC; // By default
+    selectedManualType = BTC;
     var newAddress = "";
+    var manualAmount = "";
+    var manualBuyPrice = "";
+
+    function checkEnableAddManualButton() {
+      if (manualAmount.length > 0 && manualBuyPrice.length > 0) {
+        document.getElementById('add-manual-button').disabled = false;
+      } else {
+        document.getElementById('add-manual-button').disabled = true;
+      }
+    }
+
+    function addCoinToPortfolio() {
+      var alreadyExists = false;
+      var newCoin = {
+        "type": selectedManualType,
+        "amount": parseFloat(manualAmount)
+      };
+
+      portfolio.coins.forEach(function (coin) {
+        if (coin.type === newCoin.type) {
+          alreadyExists = true;
+          coin.amount += newCoin.amount;
+        }
+      });
+
+      if (!alreadyExists) {
+        portfolio.coins.push(newCoin);
+      }
+    }
+
+    $('#add-manual-button').click(function(event) {
+      addCoinToPortfolio();
+      blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
+      closeDialog();
+    });
+
+    $('#coin-qty').on('keyup', function(event) {
+      manualAmount = document.getElementById('coin-qty').value.trim();
+      document.getElementById('amount-invalid-message').display = 'none';
+      if (isNaN(manualAmount)) {
+        document.getElementById('coin-qty').value = "";
+        document.getElementById('amount-invalid-message').display = 'inline';
+      }
+      checkEnableAddManualButton();
+    });
+
+    $('#currency-qty').on('keyup', function(event) {
+      manualBuyPrice = document.getElementById('currency-qty').value.trim();
+      document.getElementById('currency-invalid-message').display = 'none';
+      if (isNaN(manualBuyPrice)) {
+        document.getElementById('currency-qty').value = "";
+        document.getElementById('currency-invalid-message').display = 'inline';
+      }
+      checkEnableAddManualButton();
+    });
+
+    $('#coin-list').click(function(event) {
+      console.log("options");
+      console.log(selectedManualType.toUpperCase());
+      document.getElementById('coin-symbol').textContent = selectedManualType.toUpperCase();
+    });
 
     $('#addDialog-button').click(function(event) {
       $('#addDialog').toggle();
@@ -53,13 +116,13 @@ var DashboardPage = Backbone.View.extend({
     $('#btc-button').click(function(event) {
       document.getElementById('btc-button').classList.add('currency-button-selected');
       document.getElementById('eth-button').classList.remove('currency-button-selected');
-      selectedType = BTC; 
+      selectedAddressType = BTC; 
     });
 
     $('#eth-button').click(function(event) {
       document.getElementById('eth-button').classList.add('currency-button-selected');
       document.getElementById('btc-button').classList.remove('currency-button-selected');
-      selectedType = ETH;
+      selectedAddressType = ETH;
     });
 
     $('#wallet-address').on('keyup', function(event) {
@@ -79,7 +142,7 @@ var DashboardPage = Backbone.View.extend({
       var alreadyExists = false;
 
       var newWallet = {
-        "type": selectedType,
+        "type": selectedAddressType,
         "address": newAddress
       };
 
@@ -93,7 +156,7 @@ var DashboardPage = Backbone.View.extend({
 
       if (!alreadyExists) {
         portfolio.wallets.push(newWallet);
-        fetchWalletInfo(selectedType, newAddress);
+        fetchWalletInfo(selectedAddressType, newAddress);
         closeDialog();
       } else {
         document.getElementById('already-exists-error').display = 'inline';

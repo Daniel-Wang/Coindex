@@ -26,14 +26,14 @@
       <h4 class="dialog-header">Address</h4>
 
       <input type="text" class="textinput" id="wallet-address" placeholder="Account address 0x66265740183020...">
-      <p id="already-exists-error">Address already added to portfolio</p>
+      <p id="already-exists-error" class="error-message">Address already added to portfolio</p>
       <button class='button' id="add-wallet-button" disabled="true">Link Wallet</button>
     </div>
   </div>
 
   <div id="manual-add-dialog">
     <div class="column">
-      <select id="coin-list" class="select-list">      
+      <select id="coin-list" class="select-list" onChange="selectManualCoinType(this);">      
         <option value="btc">Bitcoin</option>
         <option value="eth">Ethereum</option>
         <option value="ltc">Litecoin</option>
@@ -49,17 +49,21 @@
       <div class="line-separator"></div>  
 
       <div>
-        <input type="text" class="textinput quantity-input" id="coin-qty" placeholder="0.00"><span class="metric">BTC</span>
+        <input type="text" class="textinput quantity-input" id="coin-qty" placeholder="0.00"><span id="coin-symbol" class="metric">BTC</span>
       </div>
+
+      <p id="amount-invalid-message" class="error-message">Invalid input</p>
 
       <h4 class="dialog-header">Buy Price</h4>
       <div class="line-separator"></div>  
 
       <div>
-        <input type="text" class="textinput quantity-input" id="coin-qty" placeholder="0.00"><span class="metric">USD</span>
+        <input type="text" class="textinput quantity-input" id="currency-qty" placeholder="0.00"><span class="metric">USD</span>
       </div>
 
-      <button class='button' id="" disabled="true">Add Coins to Portfolio</button>
+      <p id="currency-invalid-message" class="error-message">Invalid input</p>
+
+      <button class='button' id="add-manual-button" disabled="true">Add Coins to Portfolio</button>
     </div>
   </div>
 

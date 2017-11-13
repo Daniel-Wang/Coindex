@@ -146,7 +146,7 @@
   padding: 6px;
 }
 
-#already-exists-error {
+.error-message {
   color: #DB5461;
   font-size: 12px;
   margin-bottom: 10px;
