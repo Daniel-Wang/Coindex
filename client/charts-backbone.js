@@ -185,7 +185,7 @@ var Chart = Backbone.View.extend({
 
 $(function() {
   $.ajax({
-    url: 'http://coincap.io/history/365day/BTC',
+    url: 'https://coincap.io/history/365day/BTC',
     success: function(data) {
       var filteredData = [];
       for (var i=0;i<data.price.length;++i) {

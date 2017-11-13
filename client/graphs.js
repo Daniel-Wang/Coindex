@@ -36,9 +36,9 @@ var Graph = Backbone.View.extend({
     });
 
     var urls = [
-      'http://coincap.io/history/365day/BTC',
-      'http://coincap.io/history/365day/ETH',
-      'http://coincap.io/history/365day/LTC'
+      'https://coincap.io/history/365day/BTC',
+      'https://coincap.io/history/365day/ETH',
+      'https://coincap.io/history/365day/LTC'
     ];
 
     var x = [];

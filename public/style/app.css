@@ -42,68 +42,68 @@ a{
 }
 
 .login{
-  height: 100vh; 
+  height: 100vh;
   width: 100vw;
-  /* background-color: #326771; */
-  background-image: url("/style/mainbkg.png");
-  background-size: cover; 
+  background-color: #547AA5;
+  /* background-image: url("/style/mainbkg.png"); */
+  background-size: cover;
   background-position: -1px -91px;
 }
 
 .header{
-  display: flex; 
+  display: flex;
   flex-direction: row;
-  justify-content: space-between; 
-  align-items: center; 
-  padding: 20px; 
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
 }
 
 .header h1{
-  padding: 0px 20px 0px 20px; 
-  color: white; 
+  padding: 0px 20px 0px 20px;
+  color: white;
 }
 
 .logo{
-  width: 100px; 
-  height: 100px; 
+  width: 100px;
+  height: 100px;
   background-size: cover;
   background-image: url("/style/logo.png");
 }
 
 .landing-pic{
-  display: flex; 
-  justify-content: flex-start;
+  display: flex;
+  align-items: center;
 }
 
 .column {
-  display: flex; 
-  flex-direction: column; 
+  display: flex;
+  flex-direction: column;
 }
 
 .content{
-  display: flex; 
-  flex-direction: column; 
-  justify-content: center; 
-  align-items: center; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   color: white;
-  text-align: center; 
+  text-align: center;
 }
 
 .content p{
   font-style: italic;
-  font-weight: 200; 
+  font-weight: 200;
   font-size: 15px;
 }
 
 .description{
-  max-width: 200px; 
+  max-width: 200px;
 }
 
 .sidebar {
   background-color: #547AA5;
   z-index: 1;
   top: 0;
-  left: 0;  
+  left: 0;
   float: none;
   position: fixed!important;
   height: 100%;
@@ -145,8 +145,8 @@ a{
   display: inline-block;
   font-size: 16px;
 
-  position: relative; 
-  
+  position: relative;
+
   background-color: white;
   padding: 16px;
   margin-bottom: 8px;
