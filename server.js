@@ -29,7 +29,7 @@ app.use(express.static(__dirname + '/public'))
 app.get('/app.js', browserify('./client/main.js'));
 app.get('/dashboard.js', browserify('./client/dashboard.js'));
 app.get('/graphs.js', browserify('./client/graphs.js'));
-app.get('/charts.js', browserify('./client/charts.js'));
+// app.get('/charts.js', browserify('./client/charts.js'));
 app.get('/charts-backbone.js', browserify('./client/charts-backbone.js'));
 app.get('/style', browserify('./public/'));
 app.get('/coin.js', browserify('./client/coin.js'));
