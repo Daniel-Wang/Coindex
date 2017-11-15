@@ -41,7 +41,7 @@ a{
   font-weight: bolder;
 }
 
-.login{
+.login {
   height: 100vh;
   width: 100vw;
   background-color: #547AA5;
@@ -93,18 +93,6 @@ a{
 
 .sidebar {
   background-color: #547AA5;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  float: none;
-  position: fixed!important;
-  height: 100%;
-  overflow-x: hidden;
-  padding: 25px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
 .sidebar-content {
@@ -122,8 +110,7 @@ a{
 }
 
 .main-body {
-  margin-left:15%;
-  padding: 35px;
+  width: 100%;
 }
 
 .centered-row {
@@ -163,4 +150,9 @@ a{
   margin-left:-50px;
   margin-top: 26px;
   color: #a6b1ba;
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
 }
