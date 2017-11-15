@@ -13,6 +13,12 @@ const ethScanApiKey = "1W56HIJ9HQDWG3WRRTBANU3K7X3TB96P8Y";
 var DashboardPage = Backbone.View.extend({
   display: function(){
 
+    $('#signout-button').click(function(event) {
+      event.preventDefault();
+      console.log('signout')
+      blockstack.signUserOut(window.location.origin);
+    });
+
     function closeDialog() {
       $('.overlay').hide();
       $('.dialog').toggle();
@@ -116,7 +122,7 @@ var DashboardPage = Backbone.View.extend({
     $('#btc-button').click(function(event) {
       document.getElementById('btc-button').classList.add('currency-button-selected');
       document.getElementById('eth-button').classList.remove('currency-button-selected');
-      selectedAddressType = BTC; 
+      selectedAddressType = BTC;
     });
 
     $('#eth-button').click(function(event) {
@@ -128,7 +134,7 @@ var DashboardPage = Backbone.View.extend({
     $('#wallet-address').on('keyup', function(event) {
       newAddress = document.getElementById('wallet-address').value.trim();
       document.getElementById('already-exists-error').display = 'none';
-      
+
       if (newAddress.length > 0) {
         document.getElementById('add-wallet-button').disabled = false;
       } else {
@@ -161,7 +167,7 @@ var DashboardPage = Backbone.View.extend({
       } else {
         document.getElementById('already-exists-error').display = 'inline';
       }
-      
+
     });
 
     function fetchWalletInfo(type, address) {

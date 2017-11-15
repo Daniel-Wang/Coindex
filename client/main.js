@@ -20,7 +20,8 @@ var LoginPage = Backbone.View.extend({
 
     $('#signout-button').click(function(event) {
       event.preventDefault();
-      blockstack.signUserOut(window.location.href);
+      console.log('signout')
+      blockstack.signUserOut(window.location.origin);
     });
 
     // function showProfile(profile) {
