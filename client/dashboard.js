@@ -94,9 +94,7 @@ var DashboardPage = Backbone.View.extend({
     }
 
     function getCoinMarketValue(type, amount) {
-      // TODO: Get the market price of the coin
       var marketPrice = latestCoinPrices[type];
-      
       return parseFloat(amount) * marketPrice;
     }
 
@@ -153,8 +151,6 @@ var DashboardPage = Backbone.View.extend({
       if (!alreadyExists) {
         portfolio.coins.push(newCoin);
       }
-
-      portfolio.totalUSD += parseFloat(coinAmount) * parseFloat(coinPrice);
       updateTotalUSD();
       updateCoinPercentage();
       document.getElementById('currency-qty').value = "";
