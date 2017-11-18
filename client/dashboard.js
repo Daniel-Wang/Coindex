@@ -159,7 +159,7 @@ var DashboardPage = Backbone.View.extend({
     $('#add-manual-button').click(function() {
       addCoinToPortfolio(selectedManualType, manualAmount, manualBuyPrice);
       updatePortfolio();
-      // blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
+      blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
       closeDialog();
     });
 
@@ -360,7 +360,7 @@ var DashboardPage = Backbone.View.extend({
 
 
       $('.portfolio-total-balance').html(`Total balance: US$${portfolio.totalUSD.toFixed(2)}`);
-      // blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
+      blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
     }
 
     function showTransactions() {
@@ -402,18 +402,18 @@ var DashboardPage = Backbone.View.extend({
       });
     }
 
-    // blockstack.getFile(STORAGE_FILE).then((portfolioJson) => {
-    //   portfolio = JSON.parse(portfolioJson);
+    blockstack.getFile(STORAGE_FILE).then((portfolioJson) => {
+      portfolio = JSON.parse(portfolioJson);
 
-    //   if (portfolio.wallets.length == 0) {
-    //     portfolio = {
-    //       "wallets" : []
-    //     };
-    //   }
+      if (portfolio.wallets.length == 0) {
+        portfolio = {
+          "wallets" : []
+        };
+      }
 
-    //   fetchTransactions(portfolio.wallets[0].type, portfolio.wallets[0].address);
-    //   fetchWalletInfo(portfolio.wallets[0].type, portfolio.wallets[0].address);
-    // });
+      fetchTransactions(portfolio.wallets[0].type, portfolio.wallets[0].address);
+      fetchWalletInfo(portfolio.wallets[0].type, portfolio.wallets[0].address);
+    });
   }
 });
 
