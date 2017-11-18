@@ -14,17 +14,17 @@ connection.onopen = function (session) {
   function tickerEvent (args,kwargs) {
     var ticker = args[0];
     
-    if (ticker.substring(0, 5) == "USDT_") {
+    if (ticker.substring(0, 5) === "USDT_") {
       var symbol = ticker.substring(5).toLowerCase();
       latestCoinPrices[symbol] = args[1];
     }
   }
   session.subscribe('ticker', tickerEvent);
-}
+};
 
 connection.onclose = function () {
   console.log("Websocket connection closed");
-}
+};
            
 connection.open();
 
@@ -47,7 +47,7 @@ var coinSet = {
   'dash':"Dash",
   'xmr':"Monero",
   'zec':"Zcash"
-}
+};
 
 var DashboardPage = Backbone.View.extend({
   display: function(){
@@ -78,15 +78,11 @@ var DashboardPage = Backbone.View.extend({
     var manualBuyPrice = "";
 
     function checkEnableAddManualButton() {
-      if (manualAmount.length > 0 && manualBuyPrice.length > 0) {
-        document.getElementById('add-manual-button').disabled = false;
-      } else {
-        document.getElementById('add-manual-button').disabled = true;
-      }
+      document.getElementById('add-manual-button').disabled = !(manualAmount.length > 0 && manualBuyPrice.length > 0);
     }
 
     function getCoinHistoricPrice(coin) {
-      var sum = 0.0;
+      let sum = 0.0;
       coin.priceAt.forEach(function (priceAt) {
         sum += parseFloat(priceAt.coinAmount) * parseFloat(priceAt.coinPrice);
       });
@@ -94,7 +90,7 @@ var DashboardPage = Backbone.View.extend({
     }
 
     function getCoinMarketValue(type, amount) {
-      var marketPrice = latestCoinPrices[type];
+      let marketPrice = latestCoinPrices[type];
       return parseFloat(amount) * marketPrice;
     }
 
@@ -116,13 +112,13 @@ var DashboardPage = Backbone.View.extend({
     }
 
     function addCoinToPortfolio(coinType, coinAmount, coinPrice) {
-      var alreadyExists = false;
-      var newPriceAt = {
+      let alreadyExists = false;
+      const newPriceAt = {
         coinPrice: coinPrice,
         coinAmount: coinAmount
       };
 
-      var newCoin = {
+      const newCoin = {
         "type": coinType,
         "coinName": coinSet[coinType],
         "amount": parseFloat(coinAmount),
@@ -133,8 +129,8 @@ var DashboardPage = Backbone.View.extend({
         if (coin.type === newCoin.type) {
           alreadyExists = true;
           coin.amount += newCoin.amount;
-          
-          var thisPriceExists = false;
+
+          let thisPriceExists = false;
           coin.priceAt.forEach(function (priceAt) {
             if (priceAt.coinPrice) {
               thisPriceExists = true;
@@ -157,14 +153,14 @@ var DashboardPage = Backbone.View.extend({
       manualAmount = document.getElementById('coin-qty').value = "";
     }
 
-    $('#add-manual-button').click(function(event) {
+    $('#add-manual-button').click(function() {
       addCoinToPortfolio(selectedManualType, manualAmount, manualBuyPrice);
       updatePortfolio();
       // blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
       closeDialog();
     });
 
-    $('#coin-qty').on('keyup', function(event) {
+    $('#coin-qty').on('keyup', function() {
       manualAmount = document.getElementById('coin-qty').value.trim();
       document.getElementById('amount-invalid-message').display = 'none';
       if (isNaN(manualAmount)) {
@@ -174,7 +170,7 @@ var DashboardPage = Backbone.View.extend({
       checkEnableAddManualButton();
     });
 
-    $('#currency-qty').on('keyup', function(event) {
+    $('#currency-qty').on('keyup', function() {
       manualBuyPrice = document.getElementById('currency-qty').value.trim();
       document.getElementById('currency-invalid-message').display = 'none';
       if (isNaN(manualBuyPrice)) {
@@ -184,57 +180,53 @@ var DashboardPage = Backbone.View.extend({
       checkEnableAddManualButton();
     });
 
-    $('#coin-list').click(function(event) {
+    $('#coin-list').click(function() {
       console.log("options");
       console.log(selectedManualType.toUpperCase());
       document.getElementById('coin-symbol').textContent = selectedManualType.toUpperCase();
     });
 
-    $('#addDialog-button').click(function(event) {
+    $('#addDialog-button').click(function() {
       $('#addDialog').toggle();
       $('.overlay').toggle();
     });
 
-    $('#address-dialog-button').click(function(event) {
+    $('#address-dialog-button').click(function() {
       $('#choose-add-type-dialog').toggle();
       $('#address-add-dialog').toggle();
     });
 
-    $('#manual-dialog-button').click(function(event) {
+    $('#manual-dialog-button').click(function() {
       $('#choose-add-type-dialog').toggle();
       $('#manual-add-dialog').toggle();
       document.getElementById('addDialog').style.height = "600px";
     });
 
-    $('#btc-button').click(function(event) {
+    $('#btc-button').click(function() {
       document.getElementById('btc-button').classList.add('currency-button-selected');
       document.getElementById('eth-button').classList.remove('currency-button-selected');
       selectedAddressType = BTC; 
     });
 
-    $('#eth-button').click(function(event) {
+    $('#eth-button').click(function() {
       document.getElementById('eth-button').classList.add('currency-button-selected');
       document.getElementById('btc-button').classList.remove('currency-button-selected');
       selectedAddressType = ETH;
     });
 
-    $('#wallet-address').on('keyup', function(event) {
+    $('#wallet-address').on('keyup', function() {
       newAddress = document.getElementById('wallet-address').value.trim();
       document.getElementById('already-exists-error').display = 'none';
       
-      if (newAddress.length > 0) {
-        document.getElementById('add-wallet-button').disabled = false;
-      } else {
-        document.getElementById('add-wallet-button').disabled = true;
-      }
+      document.getElementById('add-wallet-button').disabled = newAddress.length <= 0;
     });
 
     $('#add-wallet-button').click(function(event) {
       event.preventDefault();
 
-      var alreadyExists = false;
+      let alreadyExists = false;
 
-      var newWallet = {
+      let newWallet = {
         "type": selectedAddressType,
         "address": newAddress
       };
@@ -258,8 +250,8 @@ var DashboardPage = Backbone.View.extend({
     });
 
     function fetchWalletInfo(type, address) {
-      var amount = "";
-      var url = "";
+      let amount = "";
+      let url = "";
 
       switch(type) {
         case BTC:
@@ -269,9 +261,9 @@ var DashboardPage = Backbone.View.extend({
 
             res.on('data', (chunk) => {
               data += chunk;
-              var p = JSON.parse(data);
+              let p = JSON.parse(data);
               amount = parseFloat(p)*Math.pow(10, -8);
-              var priceUSD = latestCoinPrices[type];
+              let priceUSD = latestCoinPrices[type];
               addCoinToPortfolio(type, amount.toString(), priceUSD.toString());
               updatePortfolio();
             });
@@ -285,9 +277,9 @@ var DashboardPage = Backbone.View.extend({
 
             res.on('data', (chunk) => {
               data += chunk;
-              var p = JSON.parse(data);
+              let p = JSON.parse(data);
               amount = parseFloat(p.result)*Math.pow(10, -18);
-              var priceUSD = latestCoinPrices[type];
+              let priceUSD = latestCoinPrices[type];
               addCoinToPortfolio(type, amount.toString(), priceUSD.toString());
               updatePortfolio();
             });
@@ -305,24 +297,24 @@ var DashboardPage = Backbone.View.extend({
     function fetchTransactions(type, address) {
       switch(type) {
         case ETH:
-          var ethTransUrl = `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&sort=asc&apikey=${ethScanApiKey}`;
+          let ethTransUrl = `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&sort=asc&apikey=${ethScanApiKey}`;
           https.get(ethTransUrl, (res) => {
             let data = '';
 
             // A chunk of data has been recieved.
             res.on('data', (chunk) => {
               data += chunk;
-              var p = JSON.parse(data);
+              let p = JSON.parse(data);
 
               p.result.forEach(function(trans) {
-                var date = new Date(trans.timeStamp*1000);
+                let date = new Date(trans.timeStamp * 1000);
                 date = date.toDateString().substring(4, 10);
-                var singleTransaction = {
-                  "date": date,
-                  "from": trans.from,
-                  "to": trans.to,
-                  "value": parseFloat(trans.value)*Math.pow(10, -18),
-                  "type": ETH
+                let singleTransaction = {
+                    "date": date,
+                    "from": trans.from,
+                    "to": trans.to,
+                    "value": parseFloat(trans.value) * Math.pow(10, -18),
+                    "type": ETH
                 };
                 transactions.push(singleTransaction);
               });
@@ -370,18 +362,18 @@ var DashboardPage = Backbone.View.extend({
 
     function showTransactions() {
       transactions.forEach(function(data){
-        var transText = "";
-        var transVal = "";
-        var transType;
+        let transText = "";
+        let transVal = "";
+        let transType;
 
-        wallets.forEach(function(wallet) {
-          if (wallet.address == data.from) {
+          wallets.forEach(function(wallet) {
+          if (wallet.address === data.from) {
             transText = "Sent ";
             transVal = "-";
           }
         });
 
-        if (transText.length == 0) {
+        if (transText.length === 0) {
           transText = "Received ";
         }
         switch(data.type) {
