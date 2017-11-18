@@ -10,24 +10,6 @@ var connection = new autobahn.Connection({
 
 var latestCoinPrices = {};
 
-connection.onopen = function (session) {
-  function tickerEvent (args,kwargs) {
-    var ticker = args[0];
-    
-    if (ticker.substring(0, 5) === "USDT_") {
-      var symbol = ticker.substring(5).toLowerCase();
-      latestCoinPrices[symbol] = args[1];
-    }
-  }
-  session.subscribe('ticker', tickerEvent);
-};
-
-connection.onclose = function () {
-  console.log("Websocket connection closed");
-};
-           
-connection.open();
-
 const https = require("https");
 
 var STORAGE_FILE = 'coindex2.json';
@@ -50,6 +32,26 @@ var coinSet = {
 };
 
 var DashboardPage = Backbone.View.extend({
+  openWebSocketConnection: function(){
+    connection.onopen = function (session) {
+      function tickerEvent (args,kwargs) {
+        let ticker = args[0];
+
+        if (ticker.substring(0, 5) === "USDT_") {
+          let symbol = ticker.substring(5).toLowerCase();
+          latestCoinPrices[symbol] = args[1];
+        }
+      }
+      session.subscribe('ticker', tickerEvent);
+    };
+
+    connection.onclose = function () {
+      console.log("Websocket connection closed");
+    };
+
+    connection.open();
+  },
+
   display: function(){
 
     function closeDialog() {
@@ -97,6 +99,7 @@ var DashboardPage = Backbone.View.extend({
     function updateCoinPercentage() {
       if (portfolio.coins.length > 0) {
         portfolio.coins.forEach(function (coin) {
+          console.log(getCoinMarketValue(coin.type, coin.amount));
           coin['percentPortfolio'] = getCoinMarketValue(coin.type, coin.amount) / parseFloat(portfolio.totalUSD) * 100.0;
         });
       }
@@ -150,7 +153,7 @@ var DashboardPage = Backbone.View.extend({
       updateTotalUSD();
       updateCoinPercentage();
       document.getElementById('currency-qty').value = "";
-      manualAmount = document.getElementById('coin-qty').value = "";
+      document.getElementById('coin-qty').value = "";
     }
 
     $('#add-manual-button').click(function() {
@@ -416,5 +419,6 @@ var DashboardPage = Backbone.View.extend({
 
 $(function() {
   var dashboardPage = new DashboardPage();
+  dashboardPage.openWebSocketConnection();
   dashboardPage.display();
 });
