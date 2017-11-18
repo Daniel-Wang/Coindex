@@ -1,16 +1,57 @@
 var Backbone = require('backbone');
 var blockstack = require('blockstack');
+var autobahn = require('autobahn');
+
+var wsuri = "wss://api.poloniex.com";
+var connection = new autobahn.Connection({
+  url: wsuri,
+  realm: "realm1"
+});
+
+var latestCoinPrices = {};
 
 const https = require("https");
 
-var STORAGE_FILE = 'coindex2.json';
+var STORAGE_FILE = 'coindex.json';
 
 const ETH = "eth";
 const BTC = "btc";
 const LTC = "ltc";
 const ethScanApiKey = "1W56HIJ9HQDWG3WRRTBANU3K7X3TB96P8Y";
 
+var coinSet = {
+  'btc':"Bitcoin",
+  'eth':"Ethereum",
+  'bch':"Bitcoin Cash",
+  'xrp':"Ripple",
+  'ltc':"Litecoin",
+  'etc':"Ethereum Classic",
+  'dash':"Dash",
+  'xmr':"Monero",
+  'zec':"Zcash"
+};
+
 var DashboardPage = Backbone.View.extend({
+  openWebSocketConnection: function(){
+    connection.onopen = function (session) {
+      function tickerEvent (args,kwargs) {
+        let ticker = args[0];
+
+        if (ticker.substring(0, 5) === "USDT_") {
+          let symbol = ticker.substring(5).toLowerCase();
+          latestCoinPrices[symbol] = args[1];
+        }
+      }
+      session.subscribe('ticker', tickerEvent);
+    };
+
+    connection.onclose = function () {
+      console.log("Websocket connection closed");
+    };
+
+    connection.open();
+  },
+
   display: function(){
 
     $('#signout-button').click(function(event) {
@@ -45,39 +86,90 @@ var DashboardPage = Backbone.View.extend({
     var manualBuyPrice = "";
 
     function checkEnableAddManualButton() {
-      if (manualAmount.length > 0 && manualBuyPrice.length > 0) {
-        document.getElementById('add-manual-button').disabled = false;
-      } else {
-        document.getElementById('add-manual-button').disabled = true;
+      document.getElementById('add-manual-button').disabled = !(manualAmount.length > 0 && manualBuyPrice.length > 0);
+    }
+
+    function getCoinHistoricPrice(coin) {
+      let sum = 0.0;
+      coin.priceAt.forEach(function (priceAt) {
+        sum += parseFloat(priceAt.coinAmount) * parseFloat(priceAt.coinPrice);
+      });
+      return sum;
+    }
+
+    function getCoinMarketValue(type, amount) {
+      let marketPrice = latestCoinPrices[type];
+      return parseFloat(amount) * marketPrice;
+    }
+
+    function updateCoinPercentage() {
+      if (portfolio.coins.length > 0) {
+        portfolio.coins.forEach(function (coin) {
+          console.log(getCoinMarketValue(coin.type, coin.amount));
+          coin['percentPortfolio'] = getCoinMarketValue(coin.type, coin.amount) / parseFloat(portfolio.totalUSD) * 100.0;
+        });
       }
     }
 
-    function addCoinToPortfolio() {
-      var alreadyExists = false;
-      var newCoin = {
-        "type": selectedManualType,
-        "amount": parseFloat(manualAmount)
+    function updateTotalUSD() {
+      if (portfolio.coins.length > 0) {
+        portfolio.totalUSD = 0;
+        portfolio.coins.forEach(function (coin) {
+          portfolio.totalUSD += getCoinMarketValue(coin.type, coin.amount);
+        });
+      }
+    }
+
+    function addCoinToPortfolio(coinType, coinAmount, coinPrice) {
+      let alreadyExists = false;
+      const newPriceAt = {
+        coinPrice: coinPrice,
+        coinAmount: coinAmount
+      };
+
+      const newCoin = {
+        "type": coinType,
+        "coinName": coinSet[coinType],
+        "amount": parseFloat(coinAmount),
+        "priceAt": [newPriceAt]
       };
 
       portfolio.coins.forEach(function (coin) {
         if (coin.type === newCoin.type) {
           alreadyExists = true;
           coin.amount += newCoin.amount;
+
+          let thisPriceExists = false;
+          coin.priceAt.forEach(function (priceAt) {
+            if (priceAt.coinPrice) {
+              thisPriceExists = true;
+              priceAt.coinPrice += coinAmount;
+            }
+          });
+
+          if (!thisPriceExists) {
+            coin.priceAt.push(newPriceAt);
+          }
         }
       });
 
       if (!alreadyExists) {
         portfolio.coins.push(newCoin);
       }
+      updateTotalUSD();
+      updateCoinPercentage();
+      document.getElementById('currency-qty').value = "";
+      document.getElementById('coin-qty').value = "";
     }
 
-    $('#add-manual-button').click(function(event) {
-      addCoinToPortfolio();
+    $('#add-manual-button').click(function() {
+      addCoinToPortfolio(selectedManualType, manualAmount, manualBuyPrice);
+      updatePortfolio();
       blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
       closeDialog();
     });
 
-    $('#coin-qty').on('keyup', function(event) {
+    $('#coin-qty').on('keyup', function() {
       manualAmount = document.getElementById('coin-qty').value.trim();
       document.getElementById('amount-invalid-message').display = 'none';
       if (isNaN(manualAmount)) {
@@ -87,7 +179,7 @@ var DashboardPage = Backbone.View.extend({
       checkEnableAddManualButton();
     });
 
-    $('#currency-qty').on('keyup', function(event) {
+    $('#currency-qty').on('keyup', function() {
       manualBuyPrice = document.getElementById('currency-qty').value.trim();
       document.getElementById('currency-invalid-message').display = 'none';
       if (isNaN(manualBuyPrice)) {
@@ -97,57 +189,52 @@ var DashboardPage = Backbone.View.extend({
       checkEnableAddManualButton();
     });
 
-    $('#coin-list').click(function(event) {
+    $('#coin-list').click(function() {
       console.log("options");
       console.log(selectedManualType.toUpperCase());
       document.getElementById('coin-symbol').textContent = selectedManualType.toUpperCase();
     });
 
-    $('#addDialog-button').click(function(event) {
+    $('#addDialog-button').click(function() {
       $('#addDialog').toggle();
       $('.overlay').toggle();
     });
 
-    $('#address-dialog-button').click(function(event) {
+    $('#address-dialog-button').click(function() {
       $('#choose-add-type-dialog').toggle();
       $('#address-add-dialog').toggle();
     });
 
-    $('#manual-dialog-button').click(function(event) {
+    $('#manual-dialog-button').click(function() {
       $('#choose-add-type-dialog').toggle();
       $('#manual-add-dialog').toggle();
       document.getElementById('addDialog').style.height = "600px";
     });
 
-    $('#btc-button').click(function(event) {
+    $('#btc-button').click(function() {
       document.getElementById('btc-button').classList.add('currency-button-selected');
       document.getElementById('eth-button').classList.remove('currency-button-selected');
       selectedAddressType = BTC;
     });
 
-    $('#eth-button').click(function(event) {
+    $('#eth-button').click(function() {
       document.getElementById('eth-button').classList.add('currency-button-selected');
       document.getElementById('btc-button').classList.remove('currency-button-selected');
       selectedAddressType = ETH;
     });
 
-    $('#wallet-address').on('keyup', function(event) {
+    $('#wallet-address').on('keyup', function() {
       newAddress = document.getElementById('wallet-address').value.trim();
       document.getElementById('already-exists-error').display = 'none';
-
-      if (newAddress.length > 0) {
-        document.getElementById('add-wallet-button').disabled = false;
-      } else {
-        document.getElementById('add-wallet-button').disabled = true;
-      }
+      document.getElementById('add-wallet-button').disabled = newAddress.length <= 0;
     });
 
     $('#add-wallet-button').click(function(event) {
       event.preventDefault();
 
-      var alreadyExists = false;
+      let alreadyExists = false;
 
-      var newWallet = {
+      let newWallet = {
         "type": selectedAddressType,
         "address": newAddress
       };
@@ -171,37 +258,38 @@ var DashboardPage = Backbone.View.extend({
     });
 
     function fetchWalletInfo(type, address) {
-      var walletValue = "";
-      var typeName = "";
-      var url = "";
+      let amount = "";
+      let url = "";
 
       switch(type) {
         case BTC:
           url = `https://blockchain.info/q/addressbalance/${address}`;
-          typeName = "bitcoin";
           https.get(url, (res) => {
             let data = '';
 
             res.on('data', (chunk) => {
               data += chunk;
-              var p = JSON.parse(data);
-              walletValue = parseFloat(p)*Math.pow(10, -8);
-              getPriceUSD(type, typeName, walletValue);
+              let p = JSON.parse(data);
+              amount = parseFloat(p)*Math.pow(10, -8);
+              let priceUSD = latestCoinPrices[type];
+              addCoinToPortfolio(type, amount.toString(), priceUSD.toString());
+              updatePortfolio();
             });
           });
           break;
 
         case ETH:
           url = `https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${ethScanApiKey}`;
-          typeName = "ethereum";
           https.get(url, (res) => {
             let data = '';
 
             res.on('data', (chunk) => {
               data += chunk;
-              var p = JSON.parse(data);
-              walletValue = parseFloat(p.result)*Math.pow(10, -18);
-              getPriceUSD(type, typeName, walletValue);
+              let p = JSON.parse(data);
+              amount = parseFloat(p.result)*Math.pow(10, -18);
+              let priceUSD = latestCoinPrices[type];
+              addCoinToPortfolio(type, amount.toString(), priceUSD.toString());
+              updatePortfolio();
             });
           });
           break;
@@ -214,53 +302,27 @@ var DashboardPage = Backbone.View.extend({
       }
     }
 
-    function getPriceUSD (type, typeName, walletValue) {
-      var url = `https://api.coinmarketcap.com/v1/ticker/${typeName}/`;
-      https.get(url, (res) => {
-        let data = '';
-
-        res.on('data', (chunk) => {
-          data += chunk;
-          var p = JSON.parse(data);
-          var priceUSD = p[0].price_usd;
-          var coinValueUSD = walletValue*parseFloat(priceUSD);
-
-          if (portfolio.totalUSD) {
-            portfolio.totalUSD += coinValueUSD;
-          } else {
-            portfolio.totalUSD = coinValueUSD;
-          }
-
-          var percent = Math.round(coinValueUSD*100/parseFloat(portfolio.totalUSD));
-          portfolio.totalUSD = parseFloat(portfolio.totalUSD).toFixed(5);
-
-          populatePortfolio(type, percent, walletValue, coinValueUSD);
-          blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
-        });
-      });
-    }
-
     function fetchTransactions(type, address) {
       switch(type) {
         case ETH:
-          var ethTransUrl = `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&sort=asc&apikey=${ethScanApiKey}`;
+          let ethTransUrl = `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&sort=asc&apikey=${ethScanApiKey}`;
           https.get(ethTransUrl, (res) => {
             let data = '';
 
             // A chunk of data has been recieved.
             res.on('data', (chunk) => {
               data += chunk;
-              var p = JSON.parse(data);
+              let p = JSON.parse(data);
 
               p.result.forEach(function(trans) {
-                var date = new Date(trans.timeStamp*1000);
+                let date = new Date(trans.timeStamp * 1000);
                 date = date.toDateString().substring(4, 10);
-                var singleTransaction = {
-                  "date": date,
-                  "from": trans.from,
-                  "to": trans.to,
-                  "value": parseFloat(trans.value)*Math.pow(10, -18),
-                  "type": ETH
+                let singleTransaction = {
+                    "date": date,
+                    "from": trans.from,
+                    "to": trans.to,
+                    "value": parseFloat(trans.value) * Math.pow(10, -18),
+                    "type": ETH
                 };
                 transactions.push(singleTransaction);
               });
@@ -285,40 +347,41 @@ var DashboardPage = Backbone.View.extend({
       $(".transaction").append(`<div class="portfolio-item"> <div class="CryptoCurrencyType"  style="flex:0.8">${date}</div> <div class="Percent-of-Portfolio" style="flex:1.2">${transText}</div> <div class="CryptoCurrencyVal" style="flex:1">${parseFloat(transVal).toFixed(5)} <span>${transType}</span></div> </div>`);
     }
 
-    function populatePortfolio(type, portPercent, value, usdExch) {
-      var typeName = "";
-      switch(type) {
-        case BTC:
-          typeName = "Bitcoin";
-          break;
+    /**
+    * updatePortfolio loops through all the coins in the wallet 
+    * and updates the information in the portfolio section 
+    **/
+    function updatePortfolio() {
+      $(".portfolio-item-container").html("");
 
-        case ETH:
-          typeName = "Ethereum";
-          break;
+      portfolio.coins.forEach(function (coin) {
 
-        case LTC:
-          typeName = "Litecoin";
-          break;
-      }
-      $(".portfolio-item-container").append(`<div class="portfolio-item">  <div class="CryptoCurrencyType">${typeName}</div> <div class="Percent-of-Portfolio">${portPercent}%</div><div class="CryptoCurrencyVal">${value.toFixed(5)} ${type}</div><div class="USD">USD ${usdExch.toFixed(5)}</div></div>`);
+        console.log(latestCoinPrices[coin.type]);
+        console.log(coin);
 
-      $('.portfolio-total-balance').html(`Total balance: US$${portfolio.totalUSD}`);
+        $(".portfolio-item-container").append(`<div class="portfolio-item">  <div class="CryptoCurrencyType">${coin.coinName}</div> <div class="Percent-of-Portfolio">${coin.percentPortfolio.toFixed(1)}%</div><div class="CryptoCurrencyVal">${coin.amount} ${coin.type}</div><div class="USD">${getCoinMarketValue(coin.type, coin.amount).toFixed(2)}</div></div>`);
+
+      });
+
+
+      $('.portfolio-total-balance').html(`Total balance: US$${portfolio.totalUSD.toFixed(2)}`);
+      blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
     }
 
     function showTransactions() {
       transactions.forEach(function(data){
-        var transText = "";
-        var transVal = "";
-        var transType;
+        let transText = "";
+        let transVal = "";
+        let transType;
 
-        wallets.forEach(function(wallet) {
-          if (wallet.address == data.from) {
+          wallets.forEach(function(wallet) {
+          if (wallet.address === data.from) {
             transText = "Sent ";
             transVal = "-";
           }
         });
 
-        if (transText.length == 0) {
+        if (transText.length === 0) {
           transText = "Received ";
         }
         switch(data.type) {
@@ -356,17 +419,11 @@ var DashboardPage = Backbone.View.extend({
       fetchTransactions(portfolio.wallets[0].type, portfolio.wallets[0].address);
       fetchWalletInfo(portfolio.wallets[0].type, portfolio.wallets[0].address);
     });
-
-    // // Uncomment when Daniel is testing and blockstack doesn't work
-    // portfolio = {
-    //   "wallets" : []
-    // };
-
-    wallets = portfolio.wallets;
   }
 });
 
 $(function() {
   var dashboardPage = new DashboardPage();
+  dashboardPage.openWebSocketConnection();
   dashboardPage.display();
 });
