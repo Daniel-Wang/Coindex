@@ -13,7 +13,7 @@ Each of these is probably a huge PR
 - [x] Port over changes from Coindex (HackHarvard)
 - [x] Fix duplicate address bug
 - [x] Implement TODOs already mentioned
-- [] Logout redirect
+- [x] Logout redirect
 - [] Major UI improvements
   - [x] Colors
   - [x] Logo
