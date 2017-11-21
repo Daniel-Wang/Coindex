@@ -49,11 +49,13 @@ span.g-perc {
 
 .line {
   stroke-width: 2;
-  stroke: #7D95B6;
+  /* stroke: #7D95B6; */
+  stroke: #547AA5;
 }
 
 .circle {
-  stroke: #7D95B6;
+  /* stroke: #7D95B6; */
+  stroke: #547AA5;
   fill: none;
   stroke-width: 2;
 }
@@ -72,4 +74,7 @@ span.g-perc {
   width: 100px;
   display: inline-block;
   text-align: center;
+  color: #547AA5;
+  border-radius: 5px;
+  border: 0;
 }
