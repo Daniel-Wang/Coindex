@@ -20,31 +20,31 @@ body {
   flex-direction: column;
 }
 
-h1{
-  padding: none;
-  margin: none;
-}
-
 a{
   color: white;
   text-decoration: none;
 }
 
 .signin {
-  margin-top: 10px;
-  padding: 10px;
+  margin-top: 50px;
+  padding: 18px;
+  padding-left: 32px;
+  padding-right: 32px;
   border: 0;
-  background: #FFF;
-  opacity: 0.7;
   border-radius: 5px;
-  color: #000;
-  font-weight: bolder;
+  font-size: 24px;
+  background: #FFF;
+  color: #547AA5;
 }
 
 .login {
   height: 100vh;
   width: 100vw;
   background-color: #547AA5;
+}
+
+h2 {
+  font-weight: normal;
 }
 
 .header{
@@ -55,16 +55,18 @@ a{
   padding: 20px;
 }
 
-.header h1{
-  padding: 0px 20px 0px 20px;
-  color: white;
-}
-
 .logo{
   width: 100px;
   height: 100px;
   background-size: cover;
   background-image: url("/style/logo.png");
+  margin-bottom: 22px;
+}
+
+.header-title {
+  font-size: 84px;
+  padding-left: 20px;
+  font-weight: normal;
 }
 
 .column {
@@ -103,6 +105,7 @@ a{
 
 .sidebar-header {
   font-size: 50px;
+  font-weight: normal;
 }
 
 .sidebar-logout {

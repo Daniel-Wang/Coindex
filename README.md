@@ -12,13 +12,13 @@ Each of these is probably a huge PR
 
 - [x] Port over changes from Coindex (HackHarvard)
 - [x] Fix duplicate address bug
-- [] Implement TODOs already mentioned
-- [] Logout redirect
+- [x] Implement TODOs already mentioned
+- [x] Logout redirect
 - [] Major UI improvements
-  - [] Colors
-  - [] Logo
+  - [x] Colors
+  - [x] Logo
   - [] Coin logos
-  - [] Dialog
+  - [x] Dialog
   - [] Animations? (After Effects on buttons that animate into a check mark)
 - [] Include price data for :
   - [] Bitcoin cash
@@ -27,7 +27,7 @@ Each of these is probably a huge PR
   - [] Monero
   - [] Zcash
   - [] Ripple
--[] Include currency exchange for:
+- [] Include currency exchange for:
   - [] EUR
   - [] JPY
   - [] GBP
@@ -37,4 +37,4 @@ Each of these is probably a huge PR
   - [] NZD
   - [] ZAR
   - [] CNY
-- [] Manually enter number of coins
+- [x] Manually enter number of coins
