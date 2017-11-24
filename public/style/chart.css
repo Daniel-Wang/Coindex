@@ -68,11 +68,6 @@ span.g-perc {
   fill: #FFECC6;
 }
 
-.linechart {
-  padding: 35px 30px;
-  padding-top: 10px;
-}
-
 .curprice {
   width: 100px;
   display: inline-block;
