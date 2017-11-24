@@ -3,7 +3,7 @@
   padding: 15px;
   border-radius: 5px;
   font-family: Helvetica;
-  color: #326771!important;
+  color: #547AA5!important;
   width: 47%;
   min-height: 210px;
 }
@@ -71,12 +71,11 @@
 
 .portfolio-header button{
   border: none;
-  background: #326771;
+  background: #547AA5;
   color: #FFF;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 20px;
   border-radius: 5px;
-  padding: 5px 9px;
+  padding: 10px 16px;
   cursor: pointer;
 }
 
@@ -94,7 +93,7 @@
 
 .portfolioHeading {
   font-weight: bolder!important;
-  color: #326771!important;
+  color: #547AA5!important;
 }
 
 .portfolio-item div{
