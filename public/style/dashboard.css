@@ -92,3 +92,10 @@
   align-items: center;
   justify-content: space-evenly;
 }
+
+.portfolio-icon {
+  height: 24px;
+  width: 24px;
+  padding-right: 10px;
+  margin-top: -5px;
+}
