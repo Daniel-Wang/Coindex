@@ -37,7 +37,6 @@ var DashboardPage = Backbone.View.extend({
   display: function(){
     function openWebSocketConnection() {
       connection.onopen = function (session) {
-        console.log("Connection opened");
         function tickerEvent(args, kwargs) {
           let ticker = args[0];
 
@@ -48,8 +47,6 @@ var DashboardPage = Backbone.View.extend({
             let indicesToRemove = [];
             let counter = 0;
             noDataLoadedCoinList.forEach(function (coin) {
-              console.log("Loading coin");
-              console.log(noDataLoadedCoinList);
               if (symbol == coin.type) {
                 indicesToRemove.push(counter);
                 let priceUSD = latestCoinPrices[symbol];
@@ -57,13 +54,16 @@ var DashboardPage = Backbone.View.extend({
               }
               counter++;
             });
+            console.log("No Data loaded coin list");
+            console.log(noDataLoadedCoinList);
+            console.log("Indices to remove");
+            console.log(indicesToRemove);
 
             indicesToRemove.forEach(function (index) {
-              index = noDataLoadedCoinList.indexOf(coin);
-              noDataLoadedCoinList = noDataLoadedCoinList.splice(index, 1);
-              console.log("Removal");
-              console.log(noDataLoadedCoinList);
+              noDataLoadedCoinList.remove(index);
             });
+            console.log("Final no data loaded coin list");
+            console.log(noDataLoadedCoinList);
 
             updateTotalUSD();
             updateCoinPercentage();
@@ -133,7 +133,6 @@ var DashboardPage = Backbone.View.extend({
     function updateCoinPercentage() {
       if (portfolio.coins.length > 0) {
         portfolio.coins.forEach(function (coin) {
-          // console.log(getCoinMarketValue(coin.type, coin.amount));
           coin['percentPortfolio'] = getCoinMarketValue(coin.type, coin.amount) / parseFloat(portfolio.totalUSD) * 100.0;
         });
       }
@@ -333,6 +332,7 @@ var DashboardPage = Backbone.View.extend({
                   "amount": amount
                 };
                 noDataLoadedCoinList.push(coin);
+                console.log(noDataLoadedCoinList);
               }
             });
           });
@@ -401,10 +401,10 @@ var DashboardPage = Backbone.View.extend({
       portfolio.coins.forEach(function (coin) {
 
         if (isNaN(getCoinMarketValue(coin.type, coin.amount))) {
-          $(".portfolio-item-container").append(`<div class="portfolio-item">  <div class="CryptoCurrencyType">${coin.coinName}</div> <div class="Percent-of-Portfolio">Loading</div><div class="CryptoCurrencyVal">${coin.amount} ${coin.type.toUpperCase()}</div><div class="USD">Loading</div></div>`);
+          $(".portfolio-item-container").append(`<div class="portfolio-item"><img src='img/${coin.type.toUpperCase()}.svg' alt='${coin.coinName}' class="portfolio-icon"><div class="CryptoCurrencyType">${coin.coinName}</div> <div class="Percent-of-Portfolio">Loading</div><div class="CryptoCurrencyVal">${coin.amount} ${coin.type.toUpperCase()}</div><div class="USD">Loading</div></div>`);
           $('.portfolio-total-balance').html(`Total balance: US$$`);
         } else {
-          $(".portfolio-item-container").append(`<div class="portfolio-item">  <div class="CryptoCurrencyType">${coin.coinName}</div> <div class="Percent-of-Portfolio">${coin.percentPortfolio.toFixed(1)}%</div><div class="CryptoCurrencyVal">${coin.amount.toFixed(5)} ${coin.type.toUpperCase()}</div><div class="USD">${getCoinMarketValue(coin.type, coin.amount).toFixed(2)}</div></div>`);
+          $(".portfolio-item-container").append(`<div class="portfolio-item"><img src='img/${coin.type.toUpperCase()}.svg' alt='${coin.coinName}' class="portfolio-icon"><div class="CryptoCurrencyType">${coin.coinName}</div> <div class="Percent-of-Portfolio">${coin.percentPortfolio.toFixed(1)}%</div><div class="CryptoCurrencyVal">${coin.amount.toFixed(5)} ${coin.type.toUpperCase()}</div><div class="USD">${getCoinMarketValue(coin.type, coin.amount).toFixed(2)}</div></div>`);
           $('.portfolio-total-balance').html(`Total balance: US$${portfolio.totalUSD.toFixed(2)}`);
           // blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
         }
