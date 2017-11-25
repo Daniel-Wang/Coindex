@@ -47,6 +47,10 @@ span.g-perc {
   align-items: flex-start;
 }
 
+.chart_div {
+  position: relative;
+}
+
 .line {
   stroke-width: 2;
   /* stroke: #7D95B6; */
@@ -77,4 +81,23 @@ span.g-perc {
   color: #547AA5;
   border-radius: 5px;
   border: 0;
+}
+
+.y-label {
+  position: absolute;
+  font-family: Helvetica;
+  font-size: 12px;
+  color: #B4B4B4;
+}
+
+.y-left {
+  left: -40px;
+}
+
+.y-right {
+  right: -40px;
+}
+
+.y-bottom {
+  bottom: 20px;
 }

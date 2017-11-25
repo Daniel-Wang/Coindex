@@ -109,8 +109,12 @@ var Chart = Backbone.View.extend({
     document.getElementById(this.el).innerHTML += "<path class='linechart_area' d='" + this.makeArea() + "' />";
     document.getElementById(this.el).innerHTML += "<circle class='circle' r='5' cx='-100' cy='-100' />";
     document.getElementById(this.el).innerHTML += "<line class='line' x1='-40' y1='0' x2='-40' y2='"+this.svgHeight+"' />";
-    document.getElementById(this.el).innerHTML += "<text font-family='Helvetica' font-size='12' fill='#B4B4B4' transform='translate(-20, 20)' textAnchor='middle'>$"+Math.round(this.getY().max)+"</text>";
-    document.getElementById(this.el).innerHTML += "<text font-family='Helvetica' font-size='12' fill='#B4B4B4' transform='translate(-20, " + parseInt(this.svgHeight - 20) +")' textAnchor='middle'>$"+Math.round(this.getY().min)+"</text>";
+    // document.getElementById(this.el).innerHTML += "<text font-family='Helvetica' font-size='12' fill='#B4B4B4' transform='translate(-20, 20)' textAnchor='middle'>$"+Math.round(this.getY().max)+"</text>";
+    // document.getElementById(this.el).innerHTML += "<text font-family='Helvetica' font-size='12' fill='#B4B4B4' transform='translate(-20, " + parseInt(this.svgHeight - 20) +")' textAnchor='middle'>$"+Math.round(this.getY().min)+"</text>";
+    $('#y-top-left').text('$'+Math.round(this.getY().max));
+    $('#y-top-right').text('$'+Math.round(this.getY().max));
+    $('#y-bottom-left').text('$'+Math.round(this.getY().min));
+    $('#y-bottom-right').text('$'+Math.round(this.getY().min));
     document.getElementById(this.el).innerHTML += "<text font-family='Helvetica' font-size='12' fill='#B4B4B4' transform='translate(0, "+ parseInt(this.svgHeight + 20) + ")' textAnchor='middle'>"+this.makeDate(this.unfilitered[0].date, true)+"</text>";
     document.getElementById(this.el).innerHTML += "<text font-family='Helvetica' font-size='12' fill='#B4B4B4' transform='translate(" + parseInt(this.svgWidth - 65) + ", "+ parseInt(this.svgHeight + 20) +")' textAnchor='middle'>"+this.makeDate(this.unfilitered[this.unfilitered.length - 1].date, false)+"</text>";
 
@@ -152,8 +156,8 @@ var Chart = Backbone.View.extend({
         document.getElementsByClassName('circle')[0].setAttribute('cy', closestPoint.svgY);
         document.getElementsByClassName('line')[0].setAttribute('x1', closestPoint.svgX);
         document.getElementsByClassName('line')[0].setAttribute('x2', closestPoint.svgX);
-        if (relativeLoc < parseInt(this.svgWidth - 20) && relativeLoc > 15) {
-          $('.curprice').css('margin-left', relativeLoc - 25);
+        if (relativeLoc < parseInt(this.svgWidth - 52) && relativeLoc > 45) {
+          $('.curprice').css('margin-left', relativeLoc - 48);
         }
 
         $('.curprice').text(closestPoint.price);
