@@ -76,6 +76,7 @@ var DashboardPage = Backbone.View.extend({
 
       connection.onclose = function () {
         console.log("Websocket connection closed");
+        alert("Websocket connection closed");
       };
 
       connection.open();
@@ -302,7 +303,6 @@ var DashboardPage = Backbone.View.extend({
                 addCoinToPortfolio(type, amount.toString(), priceUSD.toString());
                 updatePortfolio();
               } else {
-                //Add to the noDataLoadedCoinList
                 let coin = {
                   "type": type,
                   "amount": amount
@@ -328,7 +328,6 @@ var DashboardPage = Backbone.View.extend({
                 addCoinToPortfolio(type, amount.toString(), priceUSD.toString());
                 updatePortfolio();
               } else {
-                //Add to the noDataLoadedCoinList
                 let coin = {
                   "type": type,
                   "amount": amount
