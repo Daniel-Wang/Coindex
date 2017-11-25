@@ -2,7 +2,10 @@ var Backbone = require('backbone');
 var autobahn = require('autobahn');
 
 var Chart = Backbone.View.extend({
-  initialize: function(data, el) {
+  initialize: function(data, el, w, h) {
+    this.svgWidth = parseInt(w);
+    this.svgHeight = parseInt(h);
+
     var filteredData = [];
     this.unfilitered = data;
 
@@ -43,13 +46,11 @@ var Chart = Backbone.View.extend({
   },
 
   getSvgX: function(x) {
-    var svgWidth = 1000;
-    return (x / this.getX().max * (svgWidth));
+    return (x / this.getX().max * (this.svgWidth));
   },
 
   getSvgY: function(y) {
-    // const {svgHeight, xLabelSize} = this.props;
-    var svgHeight = 500;
+    var svgHeight = this.svgHeight;
     const gY = this.getY();
     return ((svgHeight) * gY.max - (svgHeight) * y) / (gY.max - gY.min);
   },
@@ -104,29 +105,27 @@ var Chart = Backbone.View.extend({
   },
 
   render: function() {
-    // console.log(this);
     document.getElementById(this.el).innerHTML = "<path class='linechart_path' d='" + this.makePath() + "' />";
     document.getElementById(this.el).innerHTML += "<path class='linechart_area' d='" + this.makeArea() + "' />";
     document.getElementById(this.el).innerHTML += "<circle class='circle' r='5' cx='-100' cy='-100' />";
-    document.getElementById(this.el).innerHTML += "<line class='line' x1='-40' y1='-8' x2='-40' y2='500' />";
-    document.getElementById(this.el).innerHTML += "<text transform='translate(-20, 20)' textAnchor='middle'>$"+Math.round(this.getY().max)+"</text>";
-    document.getElementById(this.el).innerHTML += "<text transform='translate(-20, 480)' textAnchor='middle'>$"+Math.round(this.getY().min)+"</text>";
-
-    document.getElementById(this.el).innerHTML += "<text transform='translate(0, 520)' textAnchor='middle'>"+this.makeDate(this.unfilitered[0].date, true)+"</text>";
-    document.getElementById(this.el).innerHTML += "<text transform='translate(935, 520)' textAnchor='middle'>"+this.makeDate(this.unfilitered[this.unfilitered.length - 1].date, false)+"</text>";
+    document.getElementById(this.el).innerHTML += "<line class='line' x1='-40' y1='0' x2='-40' y2='"+this.svgHeight+"' />";
+    // document.getElementById(this.el).innerHTML += "<text font-family='Helvetica' font-size='12' fill='#B4B4B4' transform='translate(-20, 20)' textAnchor='middle'>$"+Math.round(this.getY().max)+"</text>";
+    // document.getElementById(this.el).innerHTML += "<text font-family='Helvetica' font-size='12' fill='#B4B4B4' transform='translate(-20, " + parseInt(this.svgHeight - 20) +")' textAnchor='middle'>$"+Math.round(this.getY().min)+"</text>";
+    $('#y-top-left').text('$'+Math.round(this.getY().max));
+    $('#y-top-right').text('$'+Math.round(this.getY().max));
+    $('#y-bottom-left').text('$'+Math.round(this.getY().min));
+    $('#y-bottom-right').text('$'+Math.round(this.getY().min));
+    document.getElementById(this.el).innerHTML += "<text font-family='Helvetica' font-size='12' fill='#B4B4B4' transform='translate(0, "+ parseInt(this.svgHeight + 20) + ")' textAnchor='middle'>"+this.makeDate(this.unfilitered[0].date, true)+"</text>";
+    document.getElementById(this.el).innerHTML += "<text font-family='Helvetica' font-size='12' fill='#B4B4B4' transform='translate(" + parseInt(this.svgWidth - 65) + ", "+ parseInt(this.svgHeight + 20) +")' textAnchor='middle'>"+this.makeDate(this.unfilitered[this.unfilitered.length - 1].date, false)+"</text>";
 
     document.getElementById(this.el).onmousemove = (e) => {
-      var global = Function("return this")();
-      // console.log(global);
       var data = this.data;
       var unfiltered = this.unfilitered;
-      // const {svgWidth, data, yLabelSize} = this.props;
-      var svgWidth = 1000;
+
       const svgLocation = document.getElementsByClassName("linechart")[0].getBoundingClientRect();
-      const adjustment = (svgLocation.width - svgWidth) / 2; //takes padding into consideration
+      const adjustment = (svgLocation.width - this.svgWidth) / 2; //takes padding into consideration
       const relativeLoc = e.clientX - svgLocation.left - adjustment;
-      // console.log(this);
-      // console.log(global.g.data);
+
       let svgData = [];
       data.map((point, i) => {
         svgData.push({
@@ -144,41 +143,41 @@ var Chart = Backbone.View.extend({
         }
       }
       var yLabelSize = 0;
-      if(relativeLoc - yLabelSize < 0){
+      if (relativeLoc - yLabelSize < 0) {
         // this.stopHover();
       } else {
-        // console.log('out');
         this.state = {
           hoverLoc: relativeLoc,
           activePoint: closestPoint
         }
-        // console.log(closestPoint);
+
+        $('.curprice').css('border', '2px solid #547AA5');
         document.getElementsByClassName('circle')[0].setAttribute('cx', closestPoint.svgX);
         document.getElementsByClassName('circle')[0].setAttribute('cy', closestPoint.svgY);
-        document.getElementsByClassName('line')[0].setAttribute('x1', relativeLoc);
-        document.getElementsByClassName('line')[0].setAttribute('x2', relativeLoc);
-        if (relativeLoc < 985 && relativeLoc > 15)
-          $('.curprice').css('margin-left', relativeLoc - 25);
-        // console.log(closestPoint);
+        document.getElementsByClassName('line')[0].setAttribute('x1', closestPoint.svgX);
+        document.getElementsByClassName('line')[0].setAttribute('x2', closestPoint.svgX);
+        if (relativeLoc < parseInt(this.svgWidth - 52) && relativeLoc > 45) {
+          $('.curprice').css('margin-left', relativeLoc - 48);
+        }
+
         $('.curprice').text(closestPoint.price);
         // this.props.onChartHover(relativeLoc, closestPoint);
       }
     };
 
     document.getElementById(this.el).onmouseenter = () => {
-      // console.log(this);
-      var global = Function("return this")();
-      // console.log(global);
       this.show('circle');
       this.show('line');
       $('.curprice').show();
+      $('.curprice').css('border', '2px solid #547AA5');
     };
 
     document.getElementById(this.el).onmouseleave = (e) => {
-      var global = Function("return this")();
       this.hide('circle');
       this.hide('line');
       $('.curprice').text('');
+      // $('.curprice').hide();
+      $('.curprice').css('border', '0');
     };
   }
 });
@@ -187,6 +186,7 @@ $(function() {
   $.ajax({
     url: 'https://coincap.io/history/365day/BTC',
     success: function(data) {
+      console.log('constructed');
       var filteredData = [];
       for (var i=0;i<data.price.length;++i) {
         filteredData.push({
@@ -198,7 +198,9 @@ $(function() {
 
       var chart = new Chart(
         filteredData,
-        'graph');
+        'graph',
+        800, 200
+      );
       chart.render();
     },
     error: function() {
