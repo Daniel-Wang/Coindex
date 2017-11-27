@@ -82,13 +82,12 @@
 .portfolio-item-container{
   width: 100%;
   max-height: 20%;
-  padding: 10px 0;
 }
 
 .portfolio-item{
   display: flex;
   font-size: 12pt;
-  padding-bottom: 10px;
+  padding: 20px;
 }
 
 .portfolioHeading {

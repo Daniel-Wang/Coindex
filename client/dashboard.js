@@ -37,6 +37,7 @@ var DashboardPage = Backbone.View.extend({
   display: function(){
     function openWebSocketConnection() {
       connection.onopen = function (session) {
+        console.log("Socket opened");
         function tickerEvent(args, kwargs) {
           let ticker = args[0];
 
@@ -48,6 +49,7 @@ var DashboardPage = Backbone.View.extend({
             let counter = 0;
             noDataLoadedCoinList.forEach(function (coin) {
               if (symbol == coin.type) {
+                console.log("Add removal " + counter);
                 indicesToRemove.push(counter);
                 let priceUSD = latestCoinPrices[symbol];
                 addCoinToPortfolio(symbol, coin.amount.toString(), priceUSD.toString());
@@ -55,9 +57,16 @@ var DashboardPage = Backbone.View.extend({
               counter++;
             });
 
+            console.log("initial");
+            console.log(noDataLoadedCoinList);
+            console.log(indicesToRemove);
             indicesToRemove.forEach(function (index) {
-              noDataLoadedCoinList.remove(index);
+              console.log("removed " + index);
+              noDataLoadedCoinList.splice(index, 1);
             });
+            console.log("after");
+            console.log(noDataLoadedCoinList);
+            console.log(indicesToRemove);
 
             updateTotalUSD();
             updateCoinPercentage();
@@ -70,7 +79,7 @@ var DashboardPage = Backbone.View.extend({
 
       connection.onclose = function () {
         console.log("Websocket connection closed");
-        alert("Websocket connection closed");
+        // alert("Websocket connection closed");
       };
 
       connection.open();
@@ -79,7 +88,7 @@ var DashboardPage = Backbone.View.extend({
     $('#signout-button').click(function(event) {
       event.preventDefault();
       console.log('signout')
-      blockstack.signUserOut(window.location.origin);
+      // blockstack.signUserOut(window.location.origin);
     });
 
     function closeDialog() {
@@ -186,7 +195,7 @@ var DashboardPage = Backbone.View.extend({
     $('#add-manual-button').click(function() {
       addCoinToPortfolio(selectedManualType, manualAmount, manualBuyPrice);
       updatePortfolio();
-      blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
+      // blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
       closeDialog();
     });
 
@@ -294,7 +303,6 @@ var DashboardPage = Backbone.View.extend({
               if (typeof latestCoinPrices[type] != 'undefined') {
                 let priceUSD = latestCoinPrices[type];
                 addCoinToPortfolio(type, amount.toString(), priceUSD.toString());
-                updatePortfolio();
               } else {
                 let coin = {
                   "type": type,
@@ -302,6 +310,7 @@ var DashboardPage = Backbone.View.extend({
                 };
                 noDataLoadedCoinList.push(coin);
               }
+              updatePortfolio();
             });
           });
           break;
@@ -319,7 +328,6 @@ var DashboardPage = Backbone.View.extend({
               if (typeof latestCoinPrices[type] != 'undefined') {
                 let priceUSD = latestCoinPrices[type];
                 addCoinToPortfolio(type, amount.toString(), priceUSD.toString());
-                updatePortfolio();
               } else {
                 let coin = {
                   "type": type,
@@ -327,6 +335,7 @@ var DashboardPage = Backbone.View.extend({
                 };
                 noDataLoadedCoinList.push(coin);
               }
+              updatePortfolio();
             });
           });
           break;
@@ -394,12 +403,12 @@ var DashboardPage = Backbone.View.extend({
       portfolio.coins.forEach(function (coin) {
 
         if (isNaN(getCoinMarketValue(coin.type, coin.amount))) {
-          $(".portfolio-item-container").append(`<div class="portfolio-item"><img src='img/${coin.type.toUpperCase()}.svg' alt='${coin.coinName}' class="portfolio-icon"><div class="CryptoCurrencyType">${coin.coinName}</div> <div class="Percent-of-Portfolio">Loading</div><div class="CryptoCurrencyVal">${coin.amount} ${coin.type.toUpperCase()}</div><div class="USD">Loading</div></div>`);
-          $('.portfolio-total-balance').html(`Total balance: US$$`);
+          $(".portfolio-item-container").append(`<div class="portfolio-item"><img src='img/${coin.type.toUpperCase()}.svg' alt='${coin.coinName}' class="portfolio-icon"><div class="CryptoCurrencyType">${coin.coinName}</div> <div class="Percent-of-Portfolio">Loading...</div><div class="CryptoCurrencyVal">${coin.amount} ${coin.type.toUpperCase()}</div><div class="USD">Loading...</div></div>`);
+          $('.portfolio-total-balance').html(`Total balance: Loading...`);
         } else {
           $(".portfolio-item-container").append(`<div class="portfolio-item"><img src='img/${coin.type.toUpperCase()}.svg' alt='${coin.coinName}' class="portfolio-icon"><div class="CryptoCurrencyType">${coin.coinName}</div> <div class="Percent-of-Portfolio">${coin.percentPortfolio.toFixed(1)}%</div><div class="CryptoCurrencyVal">${coin.amount.toFixed(5)} ${coin.type.toUpperCase()}</div><div class="USD">${getCoinMarketValue(coin.type, coin.amount).toFixed(2)}</div></div>`);
           $('.portfolio-total-balance').html(`Total balance: US$${portfolio.totalUSD.toFixed(2)}`);
-          blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
+          // blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
         }
       });
     }
@@ -445,18 +454,18 @@ var DashboardPage = Backbone.View.extend({
 
     openWebSocketConnection();
 
-    blockstack.getFile(STORAGE_FILE).then((portfolioJson) => {
-      portfolio = JSON.parse(portfolioJson);
-
-      if (portfolio.wallets.length == 0) {
-        portfolio = {
-          "wallets" : []
-        };
-      }
-
-      fetchTransactions(portfolio.wallets[0].type, portfolio.wallets[0].address);
-      fetchWalletInfo(portfolio.wallets[0].type, portfolio.wallets[0].address);
-    });
+    // blockstack.getFile(STORAGE_FILE).then((portfolioJson) => {
+    //   portfolio = JSON.parse(portfolioJson);
+    //
+    //   if (portfolio.wallets.length == 0) {
+    //     portfolio = {
+    //       "wallets" : []
+    //     };
+    //   }
+    //
+    //   fetchTransactions(portfolio.wallets[0].type, portfolio.wallets[0].address);
+    //   fetchWalletInfo(portfolio.wallets[0].type, portfolio.wallets[0].address);
+    // });
   }
 });
 
