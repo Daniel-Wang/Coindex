@@ -100,7 +100,7 @@ h2 {
 
 .sidebar-content {
   display: block;
-  padding: 10px;
+  padding: 20px;
 }
 
 .sidebar-header {
@@ -109,6 +109,7 @@ h2 {
 }
 
 .sidebar-logout {
+  margin-top: 35px;
   margin-bottom: 35px;
 }
 
