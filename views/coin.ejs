@@ -9,22 +9,33 @@
 </head>
 
 <body>
-  <main role="main"></main>
-
-  <!-- Sidebar -->
-  <div>
+  <div class="main">
+    <!-- Sidebar -->
     <% include partials/sidebar %>
+
+    <!-- Main Coin Page -->
+
+    <div class="main-body">
+      <!-- Coin Title -->
+      <div class="title">
+        <img class="title-symbol" src="../img/<%= coinId.toUpperCase() %>.svg">
+        <h1 class="title-name"><%= coinSet[coinId] %></h1>
+        <h3 class="">(<%= coinId.toUpperCase() %>)</h3>
+      </div>
+
+      <!--Price graph-->
+
+
+      <div>
+        <!--order book graph-->
+      </div>
+
+      <div>
+        <!--Trade volume graph-->
+      </div>
+
+    </div>
   </div>
-
-  <!-- Main Coin Page -->
-
-  <div class="main-body">
-    <!-- Coin Title -->
-    <h1 class="title"><%= coinSet[coinId] %></h1>
-    <h3 class="title-symbol">(<%= coinId.toUpperCase() %>)</h3>
-  
-  </div>
-
 
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="

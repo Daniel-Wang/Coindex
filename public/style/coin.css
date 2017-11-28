@@ -1,7 +1,16 @@
 .title {
-  
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 40px;
 }
 
 .title-symbol {
-  
+    height: 100px;
+    width: 100px;
+}
+.title-name {
+    font-size: 70px;
+    padding: 30px;
+    font-weight: normal;
 }
