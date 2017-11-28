@@ -88,7 +88,7 @@ var DashboardPage = Backbone.View.extend({
     $('#signout-button').click(function(event) {
       event.preventDefault();
       console.log('signout')
-      // blockstack.signUserOut(window.location.origin);
+      blockstack.signUserOut(window.location.origin);
     });
 
     function closeDialog() {
@@ -195,7 +195,7 @@ var DashboardPage = Backbone.View.extend({
     $('#add-manual-button').click(function() {
       addCoinToPortfolio(selectedManualType, manualAmount, manualBuyPrice);
       updatePortfolio();
-      // blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
+      blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
       closeDialog();
     });
 
@@ -408,7 +408,7 @@ var DashboardPage = Backbone.View.extend({
         } else {
           $(".portfolio-item-container").append(`<div class="portfolio-item"><img src='img/${coin.type.toUpperCase()}.svg' alt='${coin.coinName}' class="portfolio-icon"><div class="CryptoCurrencyType">${coin.coinName}</div> <div class="Percent-of-Portfolio">${coin.percentPortfolio.toFixed(1)}%</div><div class="CryptoCurrencyVal">${coin.amount.toFixed(5)} ${coin.type.toUpperCase()}</div><div class="USD">${getCoinMarketValue(coin.type, coin.amount).toFixed(2)}</div></div>`);
           $('.portfolio-total-balance').html(`Total balance: US$${portfolio.totalUSD.toFixed(2)}`);
-          // blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
+          blockstack.putFile(STORAGE_FILE, JSON.stringify(portfolio));
         }
       });
     }
@@ -454,18 +454,18 @@ var DashboardPage = Backbone.View.extend({
 
     openWebSocketConnection();
 
-    // blockstack.getFile(STORAGE_FILE).then((portfolioJson) => {
-    //   portfolio = JSON.parse(portfolioJson);
-    //
-    //   if (portfolio.wallets.length == 0) {
-    //     portfolio = {
-    //       "wallets" : []
-    //     };
-    //   }
-    //
-    //   fetchTransactions(portfolio.wallets[0].type, portfolio.wallets[0].address);
-    //   fetchWalletInfo(portfolio.wallets[0].type, portfolio.wallets[0].address);
-    // });
+    blockstack.getFile(STORAGE_FILE).then((portfolioJson) => {
+      portfolio = JSON.parse(portfolioJson);
+
+      if (portfolio.wallets.length == 0) {
+        portfolio = {
+          "wallets" : []
+        };
+      }
+
+      fetchTransactions(portfolio.wallets[0].type, portfolio.wallets[0].address);
+      fetchWalletInfo(portfolio.wallets[0].type, portfolio.wallets[0].address);
+    });
   }
 });
 
