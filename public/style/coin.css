@@ -1,20 +1,22 @@
 .title {
     display: flex;
     flex-direction: row;
-    align-items: flex-end;
+    align-items: center;
     padding: 40px;
 }
 
 .title-symbol-icon {
-    height: 100px;
-    width: 100px;
+    height: 80px;
+    width: 80px;
 }
 .title-name {
-    font-size: 70px;
-    padding: 0 30px;
+    font-size: 40px;
+    padding-left: 20px;
+    padding-right: 10px;
     font-weight: normal;
 }
 
 .title-symbol {
-    padding-bottom:18px;
+    padding-bottom:8px;
+    color: #999999;
 }

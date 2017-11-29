@@ -96,6 +96,7 @@ h2 {
 
 .sidebar {
   background-color: #547AA5;
+  height: 100vh;
 }
 
 .sidebar-content {
@@ -109,8 +110,10 @@ h2 {
 }
 
 .sidebar-logout {
+  display: flex;
   margin-top: 35px;
   margin-bottom: 35px;
+  align-self: flex-end;
 }
 
 .main-body {

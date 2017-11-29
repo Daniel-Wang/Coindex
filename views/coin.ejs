@@ -19,8 +19,15 @@
       <!-- Coin Title -->
       <div class="title">
         <img class="title-symbol-icon" src="../img/<%= coinId.toUpperCase() %>.svg">
-        <h1 class="title-name"><%= coinSet[coinId] %></h1>
-        <h3 class="title-symbol">(<%= coinId.toUpperCase() %>)</h3>
+        <div style="display: flex; flex-direction: row; align-items: flex-end;">
+          <h1 class="title-name"><%= coinSet[coinId] %></h1>
+          <h3 class="title-symbol">(<%= coinId.toUpperCase() %>)</h3>
+        </div>
+      </div>
+
+      <!--Bite size numbers summary-->
+      <div class="">
+
       </div>
 
       <!--Price graph-->
