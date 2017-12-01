@@ -19,19 +19,40 @@
       <!-- Coin Title -->
       <div class="title">
         <img class="title-symbol-icon" src="../img/<%= coinId.toUpperCase() %>.svg">
-        <div style="display: flex; flex-direction: row; align-items: flex-end;">
+        <div class="main align-end">
           <h1 class="title-name"><%= coinSet[coinId] %></h1>
           <h3 class="title-symbol">(<%= coinId.toUpperCase() %>)</h3>
         </div>
       </div>
 
-      <!--Bite size numbers summary-->
-      <div class="">
+      <div>
+        <span class="medium-text" id="price-text"></span>
+        <span class="small-text" id="currency-text">USD</span>
+        <span class="medium-text" id="price-change-text"></span>
+      </div>
 
+      <div class="column market-summary-container">
+        <div class="main align-end" id="market-summary-title">
+          <span id="market-cap-text">Market Cap</span>
+          <span id="volume-text">Volume (24h)</span>
+          <span id="circulating-supply-text">Circulating Volume</span>
+          <span id="max-supply-text">Max Supply</span>
+        </div>
+        <div class="main align-end" id="market-summary-content">
+          <span id="market-cap-text-value"></span>
+          <span id="volume-text-value"></span>
+          <span id="circulating-supply-text-value"></span>
+          <span id="max-supply-text-value"></span>
+        </div>
       </div>
 
       <!--Price graph-->
 
+
+      <!--Bite size numbers summary-->
+      <div class="">
+
+      </div>
 
       <div>
         <!--order book graph-->

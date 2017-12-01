@@ -5,7 +5,7 @@
 }
 
 html {
-  margin: 0px;
+  margin: 0;
   height: 100%;
   width: 100%;
 }
@@ -15,7 +15,7 @@ body {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
   background-color: #F4F7FA;
 
-  margin: 0px;
+  margin: 0;
 
   display: flex;
   flex-direction: column;
@@ -53,7 +53,7 @@ h2 {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 1 vw;
+  padding: 1vw;
 }
 
 .logo{
@@ -118,6 +118,7 @@ h2 {
 
 .main-body {
   width: 100%;
+  padding: 80px;
 }
 
 .centered-row {
@@ -150,7 +151,7 @@ h2 {
 }
 
 .metric {
-  height:0px;
+  height:0;
   overflow:visible;
   pointer-events:none;
   background:none !important;
@@ -162,4 +163,20 @@ h2 {
 .main {
   display: flex;
   flex-direction: row;
+}
+
+.align-end {
+  align-items: flex-end;
+}
+
+.medium-text {
+  font-size: 30px;
+  padding-right: 10px;
+  font-weight: normal;
+}
+
+.small-text {
+  font-size: 25px;
+  padding-right: 10px;
+  font-weight: normal;
 }

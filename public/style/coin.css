@@ -2,21 +2,39 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 40px;
+    margin-bottom: 20px;
 }
 
 .title-symbol-icon {
-    height: 80px;
-    width: 80px;
+    height: 70px;
+    width: 70px;
+    margin-right: 20px;
 }
 .title-name {
     font-size: 40px;
-    padding-left: 20px;
     padding-right: 10px;
     font-weight: normal;
 }
 
 .title-symbol {
     padding-bottom:8px;
+    padding-right: 40px;
     color: #999999;
+}
+
+.market-summary-container {
+
+}
+
+#market-summary-title *{
+    padding-top: 40px;
+    width: 250px;
+
+
+}
+
+#market-summary-content *{
+    padding-top: 20px;
+    width: 250px;
+
 }
