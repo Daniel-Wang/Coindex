@@ -1,30 +1,30 @@
-const express = require('express')
+const express = require('express');
 var browserify = require('browserify-middleware');
 
-const app = express()
-const port = 5000
+const app = express();
+const port = 5000;
 
-var coinSet = {
-  'btc':"Bitcoin",
-  'eth':"Ethereum",
-  'bch':"Bitcoin Cash",
-  'xrp':"Ripple",
-  'ltc':"Litecoin",
-  'etc':"Ethereum Classic",
-  'dash':"Dash",
-  'xmr':"Monero",
-  'zec':"Zcash"
-}
+const coinSet = {
+  'btc': "Bitcoin",
+  'eth': "Ethereum",
+  'bch': "Bitcoin Cash",
+  'xrp': "Ripple",
+  'ltc': "Litecoin",
+  'etc': "Ethereum Classic",
+  'dash': "Dash",
+  'xmr': "Monero",
+  'zec': "Zcash"
+};
 
 function allowCrossDomain(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
-  res.header('Access-Control-Allow-Headers', 'Content-Type')
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
   next()
 }
 
-app.use(allowCrossDomain)
-app.use(express.static(__dirname + '/public'))
+app.use(allowCrossDomain);
+app.use(express.static(__dirname + '/public'));
 
 app.get('/app.js', browserify('./client/main.js'));
 app.get('/dashboard.js', browserify('./client/dashboard.js'));
@@ -63,4 +63,4 @@ app.listen(process.env.PORT || port, (err) => {
     return console.log('something bad happened', err)
   }
   console.log(`server is listening on ${port}`)
-})
+});

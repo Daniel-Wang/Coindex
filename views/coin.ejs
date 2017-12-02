@@ -9,22 +9,81 @@
 </head>
 
 <body>
-  <main role="main"></main>
-
-  <!-- Sidebar -->
-  <div>
+  <div class="main">
+    <!-- Sidebar -->
     <% include partials/sidebar %>
+
+    <!-- Main Coin Page -->
+
+    <div class="main-body">
+      <!-- Coin Title -->
+      <div class="title">
+        <img class="title-symbol-icon" src="../img/<%= coinId.toUpperCase() %>.svg">
+        <div class="main align-end">
+          <h1 class="title-name"><%= coinSet[coinId] %></h1>
+          <h3 class="title-symbol">(<%= coinId.toUpperCase() %>)</h3>
+        </div>
+      </div>
+
+      <div>
+        <span class="medium-text" id="price-text"></span>
+        <span class="small-text" id="currency-text">USD</span>
+        <span class="medium-text" id="price-change-text"></span>
+
+        <script type="text/javascript">
+          var selectedManualType = "btc";
+          function fetchCurrencyData(selector) {
+            selectedCurrency = selector.options[selector.selectedIndex].value;
+          }
+        </script>
+
+        <select id="currency-list" class="select-list" onChange="fetchCurrencyData(this);">
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="JPY">JPY</option>
+          <option value="GBP">GBP</option>
+          <option value="CHF">CHF</option>
+          <option value="CAD">CAD</option>
+          <option value="AUD">AUD</option>
+          <option value="NZD">NZD</option>
+          <option value="ZAR">ZAR</option>
+          <option value="CNY">CNY</option>
+        </select>
+      </div>
+
+      <div class="column market-summary-container">
+        <div class="main align-end" id="market-summary-title">
+          <span id="market-cap-text">Market Cap</span>
+          <span id="volume-text">Volume (24h)</span>
+          <span id="circulating-supply-text">Circulating Volume</span>
+          <span id="max-supply-text">Max Supply</span>
+        </div>
+        <div class="main align-end" id="market-summary-content">
+          <span id="market-cap-text-value"></span>
+          <span id="volume-text-value"></span>
+          <span id="circulating-supply-text-value"></span>
+          <span id="max-supply-text-value"></span>
+        </div>
+      </div>
+
+      <!--Price graph-->
+
+
+      <!--Bite size numbers summary-->
+      <div class="">
+
+      </div>
+
+      <div>
+        <!--order book graph-->
+      </div>
+
+      <div>
+        <!--Trade volume graph-->
+      </div>
+
+    </div>
   </div>
-
-  <!-- Main Coin Page -->
-
-  <div class="main-body">
-    <!-- Coin Title -->
-    <h1 class="title"><%= coinSet[coinId] %></h1>
-    <h3 class="title-symbol">(<%= coinId.toUpperCase() %>)</h3>
-  
-  </div>
-
 
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
