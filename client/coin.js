@@ -6,6 +6,8 @@ var coinUrl = "https://api.coinmarketcap.com/v1/ticker/";
 const red = "#d4483c";
 const green = "#00973e";
 
+selectedCurrency = "USD";
+
 const coinSet = {
   'btc': "Bitcoin",
   'eth': "Ethereum",
@@ -22,10 +24,16 @@ var pathArray = window.location.pathname.split( '/' );
 
 var CoinPage = Backbone.View.extend({
   display: function(){
+
     function fetchCoinData() {
-      console.log("hi");
-      coinUrl += coinSet[pathArray[pathArray.length - 1]].toLowerCase().replace(/ /g,"-");
-      coinUrl += "/";
+      if (selectedCurrency == "USD") {
+        coinUrl += coinSet[pathArray[pathArray.length - 1]].toLowerCase().replace(/ /g,"-");
+        coinUrl += "/";
+
+      } else {
+        coinUrl += coinSet[pathArray[pathArray.length - 1]].toLowerCase().replace(/ /g,"-");
+        coinUrl += "?convert=" + selectedCurrency;
+      }
       https.get(coinUrl, (res) => {
         let data = '';
 
@@ -36,23 +44,38 @@ var CoinPage = Backbone.View.extend({
           console.log(p[0]);
 
           populateViews(p[0]);
+          coinUrl = "https://api.coinmarketcap.com/v1/ticker/";
         });
       });
     }
 
     function populateViews(data) {
-      document.getElementById('price-text').innerHTML = data.price_usd;
+      selectedCurrency = selectedCurrency.toLowerCase();
+      document.getElementById('price-text').innerHTML = data["price_" + selectedCurrency];
       document.getElementById('price-change-text').innerHTML = "(" + data.percent_change_24h + "%)";
       if (parseInt(data.percent_change_24h) < 0) {
         document.getElementById('price-change-text').style.color = red;
       } else {
         document.getElementById('price-change-text').style.color = green;
       }
-
-      document.getElementById('market-cap-text-value').innerHTML = "$" + parseInt(data["market_cap_usd"]).toLocaleString() + "USD";
-      document.getElementById('volume-text-value').innerHTML = "$" + parseInt(data['24h_volume_usd']).toLocaleString() + "USD";
+      document.getElementById('currency-text').innerHTML = selectedCurrency.toUpperCase();
+      document.getElementById('market-cap-text-value').innerHTML = parseInt(data["market_cap_" + selectedCurrency]).toLocaleString() + " " + selectedCurrency.toUpperCase();
+      document.getElementById('volume-text-value').innerHTML = parseInt(data['24h_volume_' + selectedCurrency]).toLocaleString() + " " + selectedCurrency.toUpperCase();
       document.getElementById('circulating-supply-text-value').innerHTML = parseInt(data["total_supply"]).toLocaleString() + " " + data["symbol"];
       document.getElementById('max-supply-text-value').innerHTML = parseInt(data["max_supply"]).toLocaleString() + " " + data["symbol"];
+    }
+
+    var select = document.getElementById('currency-list');
+
+    function onSelectChanged() {
+      console.log("fetching " + selectedCurrency);
+      fetchCoinData();
+    }
+
+    if (select.addEventListener) {
+      select.addEventListener('change', onSelectChanged, false);
+    } else {
+      select.attachEvent('onchange', onSelectChanged, false);
     }
 
     fetchCoinData();

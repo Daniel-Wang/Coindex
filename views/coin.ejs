@@ -29,6 +29,26 @@
         <span class="medium-text" id="price-text"></span>
         <span class="small-text" id="currency-text">USD</span>
         <span class="medium-text" id="price-change-text"></span>
+
+        <script type="text/javascript">
+          var selectedManualType = "btc";
+          function fetchCurrencyData(selector) {
+            selectedCurrency = selector.options[selector.selectedIndex].value;
+          }
+        </script>
+
+        <select id="currency-list" class="select-list" onChange="fetchCurrencyData(this);">
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="JPY">JPY</option>
+          <option value="GBP">GBP</option>
+          <option value="CHF">CHF</option>
+          <option value="CAD">CAD</option>
+          <option value="AUD">AUD</option>
+          <option value="NZD">NZD</option>
+          <option value="ZAR">ZAR</option>
+          <option value="CNY">CNY</option>
+        </select>
       </div>
 
       <div class="column market-summary-container">
