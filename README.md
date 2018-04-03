@@ -1,6 +1,7 @@
 # Coindex
 
 Coindex is cryptocurrency token portfolio manager built on top of Blockstack.
+This project is featured on the home page of Blockstack applications and was a finalist for the Bounty. Blog [post](http://blockstack.ghost.io/encrypted-token-portfolio-bounty-recap/).
 
 This is for the [bounty](https://www.eventbrite.com/e/signature-bounties-encrypted-token-portfolio-app-registration-38154648581)
 
@@ -14,27 +15,27 @@ Each of these is probably a huge PR
 - [x] Fix duplicate address bug
 - [x] Implement TODOs already mentioned
 - [x] Logout redirect
-- [] Major UI improvements
+- x[] Major UI improvements
   - [x] Colors
   - [x] Logo
-  - [] Coin logos
+  - x[] Coin logos
   - [x] Dialog
   - [] Animations? (After Effects on buttons that animate into a check mark)
-- [] Include price data for :
-  - [] Bitcoin cash
-  - [] Ethereum Classic
-  - [] Dash
-  - [] Monero
-  - [] Zcash
-  - [] Ripple
-- [] Include currency exchange for:
-  - [] EUR
-  - [] JPY
-  - [] GBP
-  - [] CHF
-  - [] CAD
-  - [] AUD
-  - [] NZD
-  - [] ZAR
-  - [] CNY
+- [x] Include price data for :
+  - [x] Bitcoin cash
+  - [x] Ethereum Classic
+  - [x] Dash
+  - [x] Monero
+  - [x] Zcash
+  - [x] Ripple
+- [x] Include currency exchange for:
+  - [x] EUR
+  - [x] JPY
+  - [x] GBP
+  - [x] CHF
+  - [x] CAD
+  - [x] AUD
+  - [x] NZD
+  - [x] ZAR
+  - [x] CNY
 - [x] Manually enter number of coins
