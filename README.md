@@ -15,10 +15,10 @@ Each of these is probably a huge PR
 - [x] Fix duplicate address bug
 - [x] Implement TODOs already mentioned
 - [x] Logout redirect
-- x[] Major UI improvements
+- [x] Major UI improvements
   - [x] Colors
   - [x] Logo
-  - x[] Coin logos
+  - [x] Coin logos
   - [x] Dialog
   - [] Animations? (After Effects on buttons that animate into a check mark)
 - [x] Include price data for :
