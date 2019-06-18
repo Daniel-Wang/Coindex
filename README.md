@@ -1,7 +1,7 @@
 # Coindex
 
 Coindex is cryptocurrency token portfolio manager built on top of Blockstack.
-This project is featured on the home page of Blockstack applications and was a finalist for the Bounty. Blog [post](http://blockstack.ghost.io/encrypted-token-portfolio-bounty-recap/).
+This project is featured on the home page of Blockstack applications and was a [finalist for the Bounty](http://blockstack.ghost.io/encrypted-token-portfolio-bounty-recap/).
 
 This is for the [bounty](https://www.eventbrite.com/e/signature-bounties-encrypted-token-portfolio-app-registration-38154648581)
 
