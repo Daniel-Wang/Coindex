@@ -27,7 +27,7 @@
     "browserify-middleware": "^8.0.0",
     "crypto": "^1.0.1",
     "ejs": "^2.5.7",
-    "express": "^4.16.2",
+    "express": "^4.17.3",
     "fs": "0.0.1-security",
     "gdax": "^0.4.2",
     "https": "^1.0.0",
